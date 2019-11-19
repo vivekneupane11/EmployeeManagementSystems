@@ -2,78 +2,77 @@ import request from 'request';
 const axios = require('axios');
 
 export const getdata = () => dispatch => {
-    axios.get('http://localhost:4000/getdata')
-    .then(function (response) {
-        const datas=[];
-        response.data.data.map(data => {
-            const obj = [
-                {
-                    _id: data._id,
-                    name: data.name,
-                    email: data.email,
-                    role: data.role,
-                    department: data.department,
-                    age: data.age,
-                    dob: data.dob,
-                    contact: data.contact,
-                    address: data.address,
-                    password: data.password,
-                    deleted: data.deleted
+    axios
+        .get('http://localhost:4000/users')
+        .then(function(response) {
+            const datas = [];
+
+            JSON.parse(response.data.content).map(data => {
+                const obj = [
+                    {
+                        _id: data._id,
+                        username: data.username,
+                        email: data.email,
+                        role: data.role,
+                        department: data.department,
+                        age: data.age,
+                        dob: data.dob,
+                        contact: data.contact,
+                        address: data.address,
+                        password: data.password,
+                        deleted: data.deleted,
+                        imagePath: data.imagePath
+                    }
+                ];
+                if (data.deleted !== true) {
+                    Array.prototype.push.apply(datas, obj);
                 }
-            ];
-            if (data.deleted != true) {
-                Array.prototype.push.apply(datas, obj);
-            }
-        });
+            });
 
-        dispatch({
-            type: 'GET_DATA',
-            payload: datas
+            dispatch({
+                type: 'GET_DATA',
+                payload: datas
+            });
         })
-    })
-    .catch(function (error) {        
-        alert(error);
-    })
-}
+        .catch(function(error) {
+            alert(error);
+        });
+};
 
-export const sendMail = (obj) => dispatch => {
-    request(
-        {
-            url: 'http://localhost:4000/resetpassword/sendlinktoemail',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'sgdjajdajdjasdjas'
-            },
-            method: 'POST',
-            json: true,
-            body: obj
-        },
-        (error, response) => {
-           
+export const sendMail = obj => dispatch => {
+    let responses = {};
+    let errors = {};
+    axios
+        .put('http://localhost:4000/users/sendlinktomail', obj)
+        .then(response => {
+            responses = response;
+        })
+        .catch(function(error) {
+            errors = error;
+        })
+        .finally(function() {
             dispatch({
                 type: 'SEND_EMAIL',
                 payload: obj,
-                response: response
-            })
-            
-        }
-    );
+                response: responses,
+                error: errors
+            });
+        });
 };
 
 export const createUser = myJSONObject => dispatch => {
     request(
         {
-            url: 'http://localhost:4000/register',
+            url: 'http://localhost:4000/users',
             method: 'POST',
             json: true, // <--Very important!!!
             body: myJSONObject
         },
-        function(error, response, body) {
-            console.log(response);
+        (response, error) => {
             dispatch({
                 type: 'CREATE_USER',
                 payload: myJSONObject,
-                response: response
+                response: response ? response : error
             });
         }
     );
@@ -82,8 +81,8 @@ export const createUser = myJSONObject => dispatch => {
 export const updateData = myJSONObject => dispatch => {
     request(
         {
-            url: 'http://localhost:4000/updatedata',
-            method: 'POST',
+            url: `http://localhost:4000/users/?id=${myJSONObject._id}`,
+            method: 'PUT',
             json: true, // <--Very important!!!
             body: myJSONObject
         },
@@ -92,8 +91,6 @@ export const updateData = myJSONObject => dispatch => {
                 type: 'UPDATE_DATA',
                 response: response
             });
-            console.log(body, response, error);
-            alert(response.body);
         }
     );
 };
@@ -101,24 +98,25 @@ export const updateData = myJSONObject => dispatch => {
 export const getdeptdata = () => dispatch => {
     var myJSONObject = {
         _id: '',
-        name: '',
-        depthead: ''
+        departmentName: ''
     };
 
     request(
         {
-            url: 'http://localhost:4000/deptgetdata',
+            url: 'http://localhost:4000/departments',
             method: 'GET',
             json: true, // <--Very important!!!
             body: myJSONObject
         },
         function(error, response, body) {
             const datas = [];
-            response.body.data.map(data => {
+            const val = response.body.content;
+
+            val.map(data => {
                 const obj = [
                     {
                         _id: data._id,
-                        name: data.name,
+                        departmentName: data.departmentName,
                         depthead: data.depthead
                     }
                 ];
@@ -135,12 +133,13 @@ export const getdeptdata = () => dispatch => {
 export const createDept = myJSONObject => dispatch => {
     request(
         {
-            url: 'http://localhost:4000/department',
+            url: 'http://localhost:4000/departments',
             method: 'POST',
             json: true, // <--Very important!!!
             body: myJSONObject
         },
         function(error, response, body) {
+            console.log(response);
             dispatch({
                 type: 'CREATE_DEPT',
                 payload: myJSONObject,
@@ -150,41 +149,45 @@ export const createDept = myJSONObject => dispatch => {
     );
 };
 
-export const updateDept = (myJSONObject) => dispatch => {
-    request({
-        url: `http://localhost:4000/department/${myJSONObject._id}`,
-        method: "PUT",
-        json: true,   // <--Very important!!!
-        body: myJSONObject
-    }, function (error, response, body) {
-        dispatch({
-            type: 'UPDATE_DEPT',
-            payload: myJSONObject,
-            response: response.body
-        })
-    });
-}
-
-
-export const login = (myJSONObject) => dispatch => {
+export const updateDept = myJSONObject => dispatch => {
     request(
         {
-            url: 'http://localhost:4000/login',
-            method: 'POST',
-            json: true,
+            url: `http://localhost:4000/departments/?id=${myJSONObject._id}`,
+            method: 'PUT',
+            json: true, // <--Very important!!!
             body: myJSONObject
         },
-        (error, response) => {
-            let errors = {};
+        function(error, response, body) {
             dispatch({
-                type: 'LOGIN',
-                response: response,
-            })
+                type: 'UPDATE_DEPT',
+                payload: myJSONObject,
+                response: response.body
+            });
         }
     );
-}
+};
+export const loginRequest = myJSONObject => {
+    return {
+        type: 'LOGIN_REQUEST',
+        myJSONObject
+    };
+};
+export const loginSuccess = response => {
+    return {
+        type: 'LOGIN_SUCCESS',
+        response
+    };
+};
+export const loginFailure = response => {
+    console.log('arrived');
 
-export const verifyToken = (tokenObj) => dispatch => {
+    return {
+        type: 'LOGIN_FAILURE',
+        response
+    };
+};
+
+export const verifyToken = tokenObj => dispatch => {
     request(
         {
             url: 'http://localhost:4000/resetpassword/verifytoken',
@@ -195,59 +198,153 @@ export const verifyToken = (tokenObj) => dispatch => {
         (error, response) => {
             dispatch({
                 type: 'VERIFY',
-                response : response
-            })
+                response: response
+            });
         }
     );
-}
+};
 
-export const updatePassword = (obj) => dispatch => {
-    request(
-        {
-            url: 'http://localhost:4000/resetpassword/updatepassword',
-            method: 'POST',
-            json: true,
-            body: obj
-        },
-        (error, response) => {
+export const updatePassword = obj => dispatch => {
+    axios
+        .patch(`http://localhost:4000/users/reset-password/${obj.token}`, {
+            email: obj.email,
+            password: obj.password
+        })
+        .then(response => {
             dispatch({
                 type: 'UPDATE_PASSWORD',
                 response: response
-            })
-        }
-    );
-}
+            });
+        });
+};
 
-export const deleteData= (myJSONObject) => dispatch =>{
+export const deleteData = myJSONObject => dispatch => {
     request(
         {
-            url: 'http://localhost:4000/deletedata',
-            method: 'POST',
+            url: `http://localhost:4000/users/?id=${myJSONObject._id}`,
+            method: 'DELETE',
             json: true, // <--Very important!!!
             body: myJSONObject
         },
         function(error, response, body) {
             dispatch({
-                type:'DELETE_DATA',
+                type: 'DELETE_DATA',
                 response: response
-            })
+            });
         }
     );
-}
+};
 
-export const deleteDept= (myJSONObject) => dispatch =>{
-    request({
-        url: `http://localhost:4000/department/${myJSONObject._id}`,
-        method: "DELETE",
-        json: true,   // <--Very important!!!
-    }, function (error, response, body){
-        dispatch({
-            type:'DELETE_DEPT',
-            response: response,
+export const deleteDept = myJSONObject => dispatch => {
+    request(
+        {
+            url: `http://localhost:4000/departments/?id=${myJSONObject._id}`,
+            method: 'DELETE',
+            json: true // <--Very important!!!
+        },
+        function(error, response, body) {
+            dispatch({
+                type: 'DELETE_DEPT',
+                response: response
+            });
+        }
+    );
+};
+
+export const searchDept = obj => dispatch => {
+    let responses = {};
+    let errors = {};
+    axios
+        .post('http://localhost:4000/searchdept', obj)
+        .then(function(response) {
+            responses = response;
         })
-    })
-}
+        .catch(function(error) {
+            errors = error;
+        })
+        .finally(function() {
+            dispatch({
+                type: 'SEARCH_DEPT',
+                response: responses,
+                error: errors
+            });
+        });
+};
 
+export const searchUser = obj => dispatch => {
+    let responses = {};
+    let errors = {};
+    axios
+        .post('http://localhost:4000/searchuser', obj)
+        .then(function(response) {
+            responses = response.data;
+        })
+        .catch(function(error) {
+            errors = error;
+        })
+        .finally(function() {
+            dispatch({
+                type: 'SEARCH_USER',
+                response: responses,
+                error: errors
+            });
+        });
+};
 
+export const documents = (formData, config) => dispatch => {
+    let responses = {};
+    let errors = {};
+    axios
+        .post('http://localhost:4000/documents', formData, config)
+        .then(response => {
+            responses = response;
+            console.log(response);
+            console.log('00');
+        })
+        .catch(error => {
+            responses = error.response;
+        })
+        .finally(function() {
+            dispatch({
+                type: 'CREATE_DOCS',
+                response: responses,
+                error: errors
+            });
+        });
+};
 
-
+export const getdocuments = (isIndividual, id, role) => dispatch => {
+    let responses = {};
+    let url = '';
+    let myObj = '';
+    if (isIndividual) {
+        url = `http://localhost:4000/documents/${id}`;
+    } else {
+        url = `http://localhost:4000/documents/?role=${role}`;
+        myObj = {
+            email: ''
+        };
+    }
+    axios
+        .get(url, myObj)
+        .then(response => {
+            responses = response;
+            console.log(response);
+        })
+        .catch(error => {
+            responses = error.response;
+            console.log(error, 'dfasdfasd');
+        })
+        .finally(function() {
+            dispatch({
+                type: 'GET_DOCS',
+                response: responses
+            });
+        });
+};
+export const notification = message => dispatch => {
+    dispatch({
+        type: 'NOTIFY',
+        notification: message
+    });
+};

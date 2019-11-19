@@ -7,7 +7,6 @@ const ExcelColumn = ReactExport.ExcelFile.ExcelColumn;
 
 class ExportData extends React.Component {
     render() {
-        console.log(this.props.datas);
         return (
             <ExcelFile
                 element={
@@ -19,7 +18,7 @@ class ExportData extends React.Component {
             >
                 <ExcelSheet data={this.props.datas} name="Employees">
                     <ExcelColumn label="ID" value="id" />
-                    <ExcelColumn label="Name" value="name" />
+                    <ExcelColumn label="Name" value="username" />
                     <ExcelColumn label="Email" value="email" />
                     <ExcelColumn label="Age" value="age" />
                     <ExcelColumn label="Contact" value="contact" />

@@ -1,10 +1,7 @@
 import decode from 'jwt-decode';
 export default class AuthHelperMethods {
     // Initializing important variables
-    constructor(domain) {
-        //THIS LINE IS ONLY USED WHEN YOU'RE IN PRODUCTION MODE!
-        this.domain = domain || 'http://localhost:3000'; // API server domain
-    }
+    // constructor(domain) {}
 
     loggedIn = () => {
         // Checks if there is a saved token and it's still valid
@@ -20,7 +17,6 @@ export default class AuthHelperMethods {
                 return true;
             } else return false;
         } catch (err) {
-            console.log('expired check failed!');
             return false;
         }
     };

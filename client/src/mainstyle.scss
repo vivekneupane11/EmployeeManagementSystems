@@ -1,3 +1,14 @@
+@mixin desktop{
+    @media screen and (max-width:800px){
+        @content;
+    }
+}
+
+@mixin mobile{
+    @media screen and (max-width:500px){
+        @content;
+    }
+}
 .content{
     height: 89vh;  
 
@@ -5,7 +16,23 @@
         height: 89vh;      
         background-color: #f8f8f8;
         width: 100%;
-        overflow: auto;
         position: relative;
+        overflow: auto;
+
+        @include mobile(){
+            width: 90%;
+        }
+
+        .contents{
+            margin: 1.5em 3em;
+            overflow: auto;
+
+            @include desktop(){
+                margin: 1em 1.5em;
+            }
+            @include mobile(){
+                margin: 0.5em 0.75em;
+            }
+        }
     }
 }

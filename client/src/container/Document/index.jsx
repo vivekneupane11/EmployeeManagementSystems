@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { documents } from 'actions';
 import { withRouter } from 'react-router-dom';
 import DocumentUploadForm from 'components/DocumentUploadForm';
-const axios = require('axios');
 class UploadDocument extends React.Component {
     constructor(props) {
         super(props);
@@ -15,7 +17,8 @@ class UploadDocument extends React.Component {
                 isFormInValid: false
             },
             file: null,
-            filename: ''
+            filename: '',
+            visibility: 'false'
         };
     }
 
@@ -34,43 +37,45 @@ class UploadDocument extends React.Component {
 
     setPrivacy = e => {
         console.log(e.target.value);
+        e.target.value === 'yes'
+            ? this.setState({ visibility: 'false' })
+            : this.setState({ visibility: 'true' });
     };
 
     handleSubmit = e => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('myFile', this.state.file);
+        formData.append('document', this.state.file);
         formData.append('title', this.state.title);
         formData.append('description', this.state.description);
-        formData.append('visibility', true);
+        formData.append('visibility', this.state.visibility);
         formData.append('author', 'elonmusk@gmail.com');
-        formData.append('doc_type', 'organization');
-
+        formData.append('docType', 'organization');
+        formData.append('email', 'elonmusk@gmail.com');
         const config = {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         };
-
         if (this.state.title && this.state.description && this.state.file) {
-            axios
-                .post('http://localhost:4000/document-upload', formData, config)
-                .then(response => {
-                    console.log(response);
-
-                    // const value = true;
-                    // this.props.history.push({
-                    //     pathname: `/admin/view-document/${value}`
-                    // });
-                });
-            // .catch(error => {
-            //     console.log(error);
-
-            //     let errors = {};
-            //     errors['form'] = 'File should be in pdf format only';
-            //     errors['isFormInValid'] = true;
-            //     this.setState({ errors: errors });
-            // });
+            //Upload Document using redux
+            this.props.documents(formData, config);
+            setTimeout(() => {
+                //Response from redux
+                console.log(this.props.response);
+                if (this.props.response.data.success) {
+                    const value = true;
+                    this.props.history.push({
+                        pathname: `/admin/view-document/${value}`,
+                        value
+                    });
+                } else {
+                    let errors = {};
+                    errors['form'] = this.props.response.data.errors[0].detail;
+                    errors['isFormInValid'] = true;
+                    this.setState({ errors: errors });
+                }
+            }, 3000);
         } else if (!this.state.file) {
             let errors = {};
             errors['form'] = 'Please Select a file';
@@ -108,4 +113,16 @@ class UploadDocument extends React.Component {
     }
 }
 
-export default withRouter(UploadDocument);
+UploadDocument.propTypes = {
+    documents: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+    response: state.getdata.res,
+    error: state.getdata.error
+});
+
+export default connect(
+    mapStateToProps,
+    { documents }
+)(withRouter(UploadDocument));

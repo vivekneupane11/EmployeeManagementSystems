@@ -1,9 +1,26 @@
 @import "assets/styles/colors.scss";
 
+@mixin desktop {
+    @media screen and (max-width:1024px) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media screen and (max-width:600px) {
+        @content;
+    }
+}
+
 .view-user {
     width: 95%;
     height: 100%;
-    padding: 1em;
+    padding: 2em;
+    
+    @include mobile(){
+        padding: 0em;
+        width: 100%;
+    }
 
     .title {
         width: 100%;
@@ -40,9 +57,15 @@
             flex-direction: column;
             align-items: center;
 
+            @include desktop(){
+                margin-top: 2em;
+            }
+
             img {
                 width: 80%;
                 height: auto;
+                display: block;
+              
             }
 
             .buttons {

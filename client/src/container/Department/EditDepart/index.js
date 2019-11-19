@@ -3,103 +3,116 @@ import request from 'request';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { updateDept } from 'actions';
+import { updateDept, notification } from 'actions';
 import EditDeptForm from './EditDeptForm';
-
 import './style.scss';
 
 export class EditDepart extends Component {
     constructor(props) {
-        super(props)
-    
+        super(props);
+
         this.state = {
-            _id:"",
-            name:"",
-            depthead:""
-        }
+            _id: '',
+            name: '',
+            depthead: '',
+            error: ''
+        };
     }
 
-    componentDidMount(){
+    componentDidMount() {
         const propdata = this.props.location.state;
         this.setState({
             _id: propdata._id,
-            name: propdata.name,
-            depthead:propdata.depthead,
-            namevalid:"",
-            deptheadvalid:"",
-        })
+            name: propdata.departmentName,
+            stableName: propdata.departmentName,
+
+            depthead: propdata.depthead,
+            namevalid: '',
+            deptheadvalid: ''
+        });
     }
 
-    onChange(e){
+    onChange(e) {
         const name = e.target.name;
         const value = e.target.value;
         this.setState({
-            [name] : value
-        })
+            [name]: value
+        });
 
-        this.validation(name,value);
-        
+        this.validation(name, value);
     }
 
-    validation(name,value){
-      
-        if (name == 'name'){
-            if ((/^[A-Z][a-z]+(([',. -][A-Z][a-z])?[a-zA-Z]*)*$/).test(value)){
-                this.setState({namevalid: 'valid'})
+    validation(name, value) {
+        if (name == 'name') {
+            if (/^[A-Z][a-z]+(([',. -][A-Z][a-z])?[a-zA-Z]*)*$/.test(value)) {
+                this.setState({ namevalid: 'valid' });
+            } else {
+                this.setState({ namevalid: 'invalid' });
             }
-            else{
-                this.setState({namevalid: 'invalid'})
+        } else if (name == 'depthead') {
+            if (/^[A-Z][a-z]+(([',. -][A-Z][a-z])?[a-zA-Z]*)*$/.test(value)) {
+                this.setState({ deptheadvalid: 'valid' });
+            } else {
+                this.setState({ deptheadvalid: 'invalid' });
             }
         }
-
-        else if (name == 'depthead'){
-            if ((/^[A-Z][a-z]+(([',. -][A-Z][a-z])?[a-zA-Z]*)*$/).test(value)){
-                this.setState({deptheadvalid: 'valid'})
-            }
-            else{
-                this.setState({deptheadvalid: 'invalid'})
-            }
-        }       
     }
-
-
-    handleClick(e){
+    goBack = e => {
+        this.props.history.goBack();
+    };
+    handleClick(e) {
         e.preventDefault();
-        const state=this.state;
-      
+        const state = this.state;
+
         var myJSONObject = {
-            "_id" : this.state._id,
-            "name": this.state.name,
-            "depthead": this.state.depthead
+            _id: this.state._id,
+            departmentName: this.state.name,
+            depthead: this.state.depthead
         };
 
-        if  ((state.namevalid ==="" || state.namevalid === "valid") &&
-            (state.deptheadvalid =="" || state.deptheadvalid ==="valid")){
-            
+        if (
+            (state.namevalid === '' || state.namevalid === 'valid') &&
+            (state.deptheadvalid === '' || state.deptheadvalid === 'valid')
+        ) {
             this.props.updateDept(myJSONObject);
-                
-            this.props.history.push('/admin/listdept');
+            setTimeout(() => {
+                if (this.props.response.success) {
+                    this.props.notification(
+                        `${this.state.stableName} was changed to ${this.state.name} `
+                    );
+                    this.props.history.push('/admin/listdept', {
+                        value: true,
+                        message: `${this.state.stableName} was changed to ${this.state.name} `
+                    });
+                } else this.setState({ error: this.props.response.error });
+            }, 1000);
+        } else {
+            this.setState({ error: 'Enter valid information' });
         }
-
-        else{
-            alert("invalid");
-        }      
-        
     }
-    
+
     render() {
         return (
-            <EditDeptForm onChange={this.onChange.bind(this)} data = {this.state} handleClick={this.handleClick.bind(this)}/>
-        )
+            <EditDeptForm
+                onChange={this.onChange.bind(this)}
+                data={this.state}
+                handleClick={this.handleClick.bind(this)}
+                goBack={this.goBack}
+            />
+        );
     }
 }
 
-EditDepart.propTypes={
+EditDepart.propTypes = {
     updateDept: PropTypes.func.isRequired,
-}
+    notification: PropTypes.func.isRequired
+};
 
-const mapStateToProps= state => ({
+const mapStateToProps = state => ({
     response: state.createdata.response
-})
+});
 
-export default connect(mapStateToProps, { updateDept })(withRouter(EditDepart))
+export default connect(
+    mapStateToProps,
+    { updateDept, notification }
+)(withRouter(EditDepart));

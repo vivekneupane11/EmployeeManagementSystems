@@ -1,14 +1,13 @@
 import React from 'react';
-import 'assets/styles/form.scss';
 import { withRouter } from 'react-router-dom';
-import ValidateField from 'utils/helpers/ValidateField';
-import request from 'request';
-import 'components/RadioButton/index.jsx';
-import LoginForm from './LoginForm.jsx';
-import decoder from 'jwt-decode';
 import { connect } from 'react-redux';
+import decoder from 'jwt-decode';
 import PropTypes from 'prop-types';
-import { login } from 'actions';
+import { loginRequest } from 'actions';
+import Auth from 'utils/auth';
+import ValidateField from 'utils/helpers/ValidateField';
+import LoginForm from './LoginForm.jsx';
+import 'assets/styles/form.scss';
 
 class Login extends React.Component {
     constructor(props) {
@@ -16,13 +15,14 @@ class Login extends React.Component {
         this.state = {
             fields: { email: '', password: '' },
             errors: { isValidForm: false },
-            redirect: false,
-            isVisible: false
+            isVisible: false,
+            loading: false
         };
     }
     toggleIcon = e => {
         this.setState({ isVisible: this.state.isVisible ? false : true });
     };
+
     handleUserInput = e => {
         const name = e.target.name;
         const value = e.target.value;
@@ -34,69 +34,93 @@ class Login extends React.Component {
         //make changes to ingredients
         newState.email = undefined;
         newState.password = undefined;
-        this.setState({
-            errors: newState
-        });
-    };
+        newState.form = undefined;
 
+        this.setState(() => ({
+            errors: newState
+        }));
+    };
+    componentDidMount() {
+        if (this.props.location.state) {
+            const role = localStorage.getItem('token_id');
+
+            if (this.props.location.state.from && role) {
+                document.location.reload();
+            }
+        }
+        const Auto = new Auth();
+        const val = Auto.loggedIn();
+        if (val) {
+            const role = decoder(localStorage.getItem('token_id')).role;
+            this.props.history.push(`/${role}`);
+        }
+    }
     handleSubmit = e => {
         e.preventDefault();
-        console.log('hello');
-
         const error = ValidateField(this.state.fields);
         this.setState({ errors: error });
-        console.log(error);
-        console.log(error['isvalidForm']);
-
         if (error['isValidForm']) {
-            
-            this.props.login(this.state.fields);
-            
-            setTimeout(() => {
-                let errors = {};            
-                const response = this.props.response;
-                console.log(response)
-                if (response.statusCode === 401) {
-                    console.log(response);
-                    errors['form'] = `${response.body.message.error}`;
-                    errors['isValidForm'] = false;
-                    this.setState({ errors });
-                } else if (response.body.message.success) {
-                    localStorage.setItem(
-                        'token_id',
-                        response.body.message.token
-                    );
+            this.props.loginRequest(this.state.fields);
+        }
+    };
+    componentDidUpdate(prevProps) {
+        if (prevProps.getdata !== this.props.getdata) {
+            this.setState({ loading: this.props.getdata.loading });
+            if (this.props.getdata.res.success) {
+                console.log(this.props.getdata.res);
+                if (this.props.getdata.res.success) {
+                    const val = JSON.parse(this.props.getdata.res.content);
+                    localStorage.setItem('token_id', val.token);
                     const role = decoder(
                         localStorage.getItem('token_id')
                     ).role.toLowerCase();
-                    
                     this.props.history.push(`/${role}`);
                 }
-            }, 1000);              
+            } else if (this.props.getdata.res.success === false) {
+                console.log('error', this.props.getdata.res);
+                let errors = {};
+                errors['form'] = `${this.props.getdata.res.error}`;
+                errors['isValidForm'] = false;
+                this.setState({ errors });
+            }
         }
-    };
-
+    }
     render() {
-        const { fields, errors, isVisible } = this.state;
+        let notify;
+        if (this.props.location.state) {
+            notify = this.props.location.state.value;
+        }
+        const { fields, errors, isVisible, loading } = this.state;
         return (
-            <LoginForm
-                fields={fields}
-                errors={errors}
-                handleSubmit={this.handleSubmit}
-                handleUserInput={this.handleUserInput}
-                toggleIcon={this.toggleIcon}
-                isVisible={isVisible}
-            />
+            <div>
+                <LoginForm
+                    fields={fields}
+                    errors={errors}
+                    handleSubmit={this.handleSubmit}
+                    handleUserInput={this.handleUserInput}
+                    toggleIcon={this.toggleIcon}
+                    isVisible={isVisible}
+                    notify={notify}
+                    loading={loading}
+                />
+            </div>
         );
     }
 }
 
-Login.propTypes={
-    login: PropTypes.func.isRequired,
-}
+Login.propTypes = {
+    loginRequest: PropTypes.func.isRequired
+};
 
-const mapStateToProps= state => ({
-    response: state.getdata.res
-})
+const mapStateToProps = state => ({
+    ...state
+});
 
-export default connect(mapStateToProps, {login})(withRouter(Login));
+const mapDispatchToprops = dispatch => ({
+    loginRequest: object => dispatch(loginRequest(object))
+});
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToprops
+)(withRouter(Login));

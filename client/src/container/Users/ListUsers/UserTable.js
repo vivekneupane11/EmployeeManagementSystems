@@ -1,18 +1,19 @@
 import React from 'react';
-import Input from '../../../components/Input';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { deleteData } from 'actions';
+import { deleteData, notification } from 'actions';
 import PropTypes from 'prop-types';
 import decoder from 'jwt-decode';
 import Button from 'components/Button';
-import request from 'request';
 import Modal from 'components/Modal';
 import ExportData from 'components/ExportData/index';
+import Search from 'components/Search';
+import Notification from 'components/Notification';
 class UserTable extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            notification: '',
             currentPage: 1,
             itemsPerPage: 10,
             loggedin: decoder(
@@ -22,52 +23,64 @@ class UserTable extends React.Component {
             _id: ''
         };
     }
-
+    componentDidMount() {
+        this.setState({ notification: this.props.notification });
+    }
     renderTable = () => {
         const { currentPage, itemsPerPage } = this.state;
         const indexOfLastUser = currentPage * itemsPerPage;
         const indexOfFirstUser = indexOfLastUser - itemsPerPage;
-        if (this.props.datas){
-            const currentItems = this.props.datas.slice(
+        let currentItems = [];
+        if (this.props.datas) {
+            currentItems = this.props.datas.slice(
                 indexOfFirstUser,
                 indexOfLastUser
             );
-
-            return currentItems.map(data => {
-                if(data.role !== "admin"){
-                    return (
-                        <tr key={data._id}>
-                            <td className="name">{data.name}</td>
-                            <td>
-                                {data.email.length > 20
-                                    ? data.email.substring(0, 20 - 3) + '...'
-                                    : data.email}
-                            </td>
-                            <td>{data.role}</td>
-                            <td>{data.department}</td>
-                            <td>
-                                <Button
-                                    className="button--size-small button--gradient-primary"
-                                    handleClick={e => {
-                                        this.handleClick(e, data);
-                                    }}
-                                    buttonName="View"
-                                />
-                            </td>
-                            <td>
-                                <Button
-                                    className="button--size-small button--gradient-secondary1"
-                                    handleClick={e => {
-                                        this.handleDelete(e, data);
-                                    }}
-                                    buttonName="Delete"
-                                />
-                            </td>
-                        </tr>
-                    );
-                }
-            });
+        } else if (this.props.responseData) {
+            currentItems = this.props.responseData.slice(
+                indexOfFirstUser,
+                indexOfLastUser
+            );
         }
+
+        return currentItems.map(data => {
+            if (data.role !== 'admin') {
+                return (
+                    <tr key={data._id}>
+                        <td className="name">
+                            {data.username.length > 15
+                                ? data.username.substring(0, 15 - 3) + '...'
+                                : data.username}
+                        </td>
+                        <td>
+                            {data.email.length > 20
+                                ? data.email.substring(0, 20 - 3) + '...'
+                                : data.email}
+                        </td>
+                        <td>{data.role}</td>
+                        <td>{data.department}</td>
+                        <td className="pl-4 td-button">
+                            <Button
+                                className="button--size-small button--gradient-primary"
+                                handleClick={e => {
+                                    this.handleClick(e, data);
+                                }}
+                                buttonName="View"
+                            />
+                        </td>
+                        <td className="td-button">
+                            <Button
+                                className="button--size-small button--gradient-secondary1"
+                                handleClick={e => {
+                                    this.handleDelete(e, data);
+                                }}
+                                buttonName="Delete"
+                            />
+                        </td>
+                    </tr>
+                );
+            }
+        });
     };
 
     handleClick(e, data) {
@@ -102,7 +115,7 @@ class UserTable extends React.Component {
         };
 
         this.props.deleteData(myJSONObject);
-        
+
         this.setState({
             display: 'display-none'
         });
@@ -119,36 +132,74 @@ class UserTable extends React.Component {
     }
 
     renderPageNumbers = () => {
-    const pageNumbers = [];
-    if (this.props.datas){
-        for (let i = 1; i <= Math.ceil(this.props.datas.length / this.state.itemsPerPage); i++) {
-            pageNumbers.push(i);
-          }
-    }
-    return pageNumbers.map(number => {
-        return (
-          <li
-            key={number}
-            id={number}
-            className={(this.state.currentPage === number ? 'page-active ' : '') + 'page-item'}
-            onClick={(e) => this.handlePageClick(e)}>
-            {number}
-          </li>
-        );
-    });
-}
+        const pageNumbers = [];
+        if (this.props.datas) {
+            for (
+                let i = 1;
+                i <=
+                Math.ceil(this.props.datas.length / this.state.itemsPerPage);
+                i++
+            ) {
+                pageNumbers.push(i);
+            }
+        } else if (this.props.responseData) {
+            for (
+                let i = 1;
+                i <=
+                Math.ceil(
+                    this.props.responseData.length / this.state.itemsPerPage
+                );
+                i++
+            ) {
+                pageNumbers.push(i);
+            }
+        }
+        return pageNumbers.map(number => {
+            return (
+                <li
+                    key={number}
+                    id={number}
+                    className={
+                        (this.state.currentPage === number
+                            ? 'page-active '
+                            : '') + 'page-item'
+                    }
+                    onClick={e => this.handlePageClick(e)}
+                >
+                    {number}
+                </li>
+            );
+        });
+    };
     render() {
+        let notify;
+        if (this.state.notification) {
+            if (this.state.notification.length !== 0) {
+                notify = true;
+            }
+        } else notify = false;
+
         return (
             <div className="user-table">
+                {notify && <Notification message={this.state.notification} />}
                 <h3>Employee List</h3>
 
                 <div className="search">
-                    <Input type="text" name="search" placeholder="Search">
-                        <i className="icon-search"/>
-                    </Input>
-                    <div className="d-flex">
-                    <ExportData datas={this.props.datas}/>
-                    <Button className="button--gradient-primary button--size-big ml-2" handleClick={(e)=>{this.toEmployeeHierarchy(e)}} buttonName="Employee Hierarchy"/>
+                    <Search
+                        type="text"
+                        name="search"
+                        placeholder="Search"
+                        onKeyUp={this.props.keyupsearch}
+                    />
+                    <div className="d-flex flex-wrap">
+                        <ExportData datas={this.props.datas} />
+                        <Button
+                            className="button--gradient-primary button--size-big ml-lg-2 ml-xl-2"
+                            handleClick={e => {
+                                this.toEmployeeHierarchy(e);
+                            }}
+                            buttonName="Employee Hierarchy"
+                        />
                     </div>
                 </div>
                 <table className="table table-striped table-responsive">
@@ -188,11 +239,14 @@ class UserTable extends React.Component {
 UserTable.propTypes = {
     deleteData: PropTypes.func.isRequired,
     response: PropTypes.object.isRequired
-}
+};
 
-const mapStateToProps= state => ({
-    response: state.getdata.response
-})
+const mapStateToProps = state => ({
+    response: state.getdata.response,
+    notification: state.getdata.notification
+});
 
-
-export default connect(mapStateToProps, {deleteData})(withRouter(UserTable));
+export default connect(
+    mapStateToProps,
+    { deleteData }
+)(withRouter(UserTable));

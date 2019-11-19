@@ -1,24 +1,25 @@
 import React from 'react';
-import Button from 'components/Button/index.jsx';
-import Input from 'components/Input/index.jsx';
+
 import { Link } from 'react-router-dom';
-import 'assets/styles/forgotpassword.scss';
 import Toaster from 'components/Toaster/index.jsx';
 import { FaAngleDoubleLeft } from 'react-icons/fa';
+import LoadingPage from 'components/LoadingPage';
+import Button from 'components/Button/index.jsx';
+import Input from 'components/Input/index.jsx';
+import 'assets/styles/forgotpassword.scss';
 
 const ForgotPasswordForm = props => {
     var formDescp = null;
     if (!props.isEmailSentSuccess) {
         formDescp = <p> Enter your Email Address to reset the password</p>;
     } else {
-        formDescp = <p>Check your Email</p>;
+        formDescp = <p>Check your email to successfully reset password</p>;
     }
-
     return (
         <div className="forget-password-form">
             <div className="form-header">
                 <h2 className="form-heading">Reset Password</h2>
-                <p className="form-descp">{formDescp}</p>
+                <div className="form-descp">{formDescp}</div>
                 <Link to="/">
                     <span className="links">
                         <FaAngleDoubleLeft />
@@ -57,12 +58,13 @@ const ForgotPasswordForm = props => {
                                     'button--size-big button--gradient-primary'
                                 }
                             >
-                                RESET
+                                SEND
                             </Button>
                         </div>
                     </div>
                 </form>
             )}
+            {props.flag && <LoadingPage />}
         </div>
     );
 };

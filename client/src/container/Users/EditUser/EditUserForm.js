@@ -1,10 +1,15 @@
 import React from 'react';
-import Input from 'components/Input';
+import Input from 'components/InputNormal';
 import Button from 'components/Button';
 import img from 'assets/img/User Image - Edit.png';
+import Toaster from 'components/Toaster';
 const EditUserForm = props => {
-    const imagePreview = <img src={props.imagePreviewUrl} alt="profile" />;
-
+    let imagePreview;
+    if (props.imagePreviewUrl) {
+        imagePreview = <img src={props.imagePreviewUrl} alt="profile" />;
+    } else {
+        imagePreview = <img src={props.data.imagePath} alt="profile" />;
+    }
     return (
         <div>
             <div className="" data-toggle="modal" data-target="#modalEditUser">
@@ -46,14 +51,14 @@ const EditUserForm = props => {
                                             </div>
                                             <Input
                                                 type="text"
-                                                id="name"
+                                                id="username"
                                                 className="input-field"
-                                                name="name"
+                                                name="username"
                                                 onChange={e => {
                                                     props.onChange(e);
                                                 }}
                                                 label="Name"
-                                                value={props.data.name}
+                                                value={props.data.username}
                                             />
                                         </div>
                                         <div className="form-input d-flex flex-column align-items-flex-start justify-content-space-around">
@@ -123,14 +128,22 @@ const EditUserForm = props => {
                                                 value={props.data.address}
                                             />
                                         </div>
-
+                                        <div className="pb-2">
+                                            {props.error && (
+                                                <Toaster
+                                                    className="warning"
+                                                    errorMessage={props.error}
+                                                />
+                                            )}
+                                        </div>
                                         <div className="submit-button">
                                             <Button
                                                 className="button--size-normal button--gradient-primary"
-                                                buttonName="Edit"
+                                                buttonName="Confirm"
                                                 handleClick={e => {
                                                     props.handleClick(e);
                                                 }}
+                                                datadismiss={props.dismiss}
                                             />
                                         </div>
                                         <input

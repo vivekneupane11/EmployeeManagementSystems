@@ -1,81 +1,81 @@
 import React, { Component } from 'react';
-import request from 'request';
+import decoder from 'jwt-decode';
+import { getdocuments } from 'actions';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
+
 import DocumentCard from './Documentcard';
 
 class ViewDocument extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
+            // notification: this.props.match.params,
             employee: []
-            // val: props.match.value
         };
     }
 
     componentDidMount() {
-        const val = this.props.individual;
-        var url = '';
-        var method = '';
-        var myObj = '';
-        if (val) {
-            url = 'http://localhost:4000/get-ind_documents';
-            method = 'POST';
-            myObj = {
-                email: this.props.email
-            };
+        const isIndividual = this.props.individual;
+        const decoded = decoder(localStorage.getItem('token_id'));
+        let role;
+        if (decoded.role === 'Employee') {
+            role = true;
         } else {
-            url = 'http://localhost:4000/get-org_documents';
-            method = 'GET';
-            myObj = {
-                email: ''
-            };
+            role = false;
         }
-
-        request(
-            {
-                url: url,
-                method: method,
-                json: true, // <--Very important!!!
-                body: myObj
-            },
-            function(error, response, body) {
-                const datas = [];
-                console.log(response);
-
-                response.body.data.map(data => {
-                    const obj = [
-                        {
-                            _id: data._id,
-                            filename: data.myFile,
-                            title: data.title,
-                            description: data.description,
-                            department: data.department,
-                            visibility: data.visibility
-                        }
-                    ];
-                    Array.prototype.push.apply(datas, obj);
-                });
-                this.setState({
-                    documents: datas,
-                    fetch: true
-                });
-            }.bind(this)
-        );
+        const datas = [];
+        this.props.getdocuments(isIndividual, this.props.id, role);
+        setTimeout(() => {
+            const val = JSON.parse(this.props.response.data.content);
+            val.map(data => {
+                const obj = [
+                    {
+                        _id: data._id,
+                        filename: data.myFile,
+                        title: data.title,
+                        documentPath: data.documentPath,
+                        description: data.description,
+                        department: data.department,
+                        visibility: data.visibility
+                    }
+                ];
+                Array.prototype.push.apply(datas, obj);
+            });
+            this.setState({
+                documents: datas,
+                fetch: true
+            });
+        }, 1000);
     }
 
     render() {
+        console.log(this.props);
+
         return (
             <div>
                 {this.state.fetch && (
                     <DocumentCard
                         datas={this.state.documents}
-                        notification={this.state.val}
+                        notification={this.props.location}
                     />
                 )}
             </div>
-            // <h1>hello</h1>
         );
     }
 }
 
-export default ViewDocument;
+ViewDocument.propTypes = {
+    getdocuments: PropTypes.func.isRequired,
+    response: PropTypes.object.isRequired
+};
+
+const mapStateToProps = state => ({
+    response: state.getdata.res
+});
+
+export default connect(
+    mapStateToProps,
+    { getdocuments }
+)(withRouter(ViewDocument));

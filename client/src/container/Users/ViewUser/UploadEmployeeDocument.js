@@ -1,4 +1,10 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { documents } from 'actions';
+
+import { withRouter } from 'react-router-dom';
+
 import Button from 'components/Button/index.jsx';
 import UploadDocument from 'components/DocumentUploadForm';
 const axios = require('axios');
@@ -6,6 +12,8 @@ class UploadEmployeeDocument extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            toaster: 'warning',
+            dismiss: '',
             title: '',
             description: '',
             errors: {
@@ -22,7 +30,7 @@ class UploadEmployeeDocument extends React.Component {
     handleChange = e => {
         const name = e.target.name;
         const value = e.target.value;
-        this.setState({ [name]: value });
+        this.setState({ [name]: value, dismiss: '' });
         //make changes to ingredients
         let newState = JSON.parse(JSON.stringify(this.state.errors));
         newState.form = undefined;
@@ -32,19 +40,17 @@ class UploadEmployeeDocument extends React.Component {
         });
     };
 
-    setPrivacy = e => {
-        console.log(e.target.value);
-    };
-
+    setPrivacy = e => {};
+    componentDidMount() {}
     handleSubmit = e => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('myFile', this.state.file);
+        formData.append('document', this.state.file);
         formData.append('title', this.state.title);
         formData.append('description', this.state.description);
         formData.append('visibility', true);
-        formData.append('doc_type', 'individual');
-        formData.append('email', this.props.email);
+        formData.append('docType', 'individual');
+        formData.append('userID', this.props.id);
         formData.append('author', 'elonmusk@gmail.com');
 
         const config = {
@@ -54,22 +60,23 @@ class UploadEmployeeDocument extends React.Component {
         };
 
         if (this.state.title && this.state.description && this.state.file) {
-            axios
-                .post('http://localhost:4000/document-upload', formData, config)
-                .then(response => {
-                    console.log(response);
-
-                    // const value = true;
-                    // this.props.history.push({
-                    //     pathname: `/hr/view-document/${value}`
-                    // });
-                });
-            // .catch(error => {
-            //     let errors = {};
-            //     errors['form'] = 'Please enter file in pdf format only';
-            //     errors['isFormInValid'] = true;
-            //     this.setState({ errors: errors });
-            // });
+            this.props.documents(formData, config);
+            setTimeout(() => {
+                //Response from redux
+                console.log(this.props.response);
+                if (this.props.response.data.success) {
+                    const value = true;
+                    this.props.history.push({
+                        pathname: `/admin/view-document/${value}`,
+                        value
+                    });
+                } else {
+                    let errors = {};
+                    errors['form'] = this.props.response.data.errors[0].detail;
+                    errors['isFormInValid'] = true;
+                    this.setState({ errors: errors });
+                }
+            }, 3000);
         } else {
             let errors = {};
             errors['form'] = 'Please Enter valid information';
@@ -90,8 +97,8 @@ class UploadEmployeeDocument extends React.Component {
                         data-toggle="modal"
                         data-target="#modalLoginForm"
                     >
-                        <Button className="button--size-normal button--gradient-primary">
-                            Upload
+                        <Button className="button--size-big button--gradient-primary">
+                            Upload Documents
                         </Button>
                     </div>
                 </div>
@@ -103,12 +110,16 @@ class UploadEmployeeDocument extends React.Component {
                     aria-labelledby="myModalLabel"
                     aria-hidden="true"
                 >
-                    <div className="modal-dialog" role="document">
+                    <div
+                        className="modal-dialog"
+                        role="document"
+                        id="modalwindow"
+                    >
                         <div className="modal-content">
                             <div className="modal-body">
                                 <button
                                     type="button"
-                                    class="close"
+                                    className="close"
                                     data-dismiss="modal"
                                     aria-label="Close"
                                 >
@@ -121,6 +132,8 @@ class UploadEmployeeDocument extends React.Component {
                                     handleChange={this.handleChange}
                                     setPrivacy={this.setPrivacy}
                                     errors={this.state.errors}
+                                    dismiss={this.state.dismiss}
+                                    toaster={this.state.toaster}
                                 />
                             </div>
                         </div>
@@ -130,4 +143,17 @@ class UploadEmployeeDocument extends React.Component {
         );
     }
 }
-export default UploadEmployeeDocument;
+
+UploadDocument.propTypes = {
+    documents: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+    response: state.getdata.res,
+    error: state.getdata.error
+});
+
+export default connect(
+    mapStateToProps,
+    { documents }
+)(withRouter(UploadEmployeeDocument));

@@ -25,7 +25,7 @@ const UploadDocument = props => {
                         <input
                             type="file"
                             id="file"
-                            name="myFile"
+                            name="document"
                             className="inputfile"
                             onChange={props.handlefiles}
                         />
@@ -86,14 +86,17 @@ const UploadDocument = props => {
                         />
                     )}
                     <div className="inputfields">
-                        <Button
-                            className={
-                                'button--size-big button--gradient-primary'
-                            }
-                        >
-                            <i className="icon-document" />
-                            Upload
-                        </Button>
+                        <div className="">
+                            <Button
+                                datadismiss={props.dismiss}
+                                className={
+                                    'button--size-big button--gradient-primary'
+                                }
+                            >
+                                <i className="icon-document" />
+                                Upload
+                            </Button>
+                        </div>
                     </div>
                 </form>
             </div>

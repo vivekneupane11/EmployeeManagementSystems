@@ -7,6 +7,7 @@ const Button = props => {
                 type="submit"
                 className={`btn ${props.className}`}
                 onClick={props.handleClick}
+                data-dismiss={props.datadismiss}
             >
                 {props.buttonName}
                 {props.children}

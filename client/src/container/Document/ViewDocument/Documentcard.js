@@ -1,7 +1,8 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import './documentcard.scss';
 import Error from 'components/Toaster/index.jsx';
+import './documentcard.scss';
+import Notification from 'components/Notification';
 
 class DocumentCard extends React.Component {
     renderTable = () => {
@@ -15,10 +16,12 @@ class DocumentCard extends React.Component {
                         <p className="card-text">{data.description}</p>
                     </div>
                     <div className="document-footer">
-                        <a href={data.filename}>
+                        <p>
                             {' '}
-                            <p className="card-text">{data.filename}</p>
-                        </a>
+                            <a className="card-text" href={data.documentPath}>
+                                Download
+                            </a>
+                        </p>
                         <p className="card-text">{data.author}</p>
                     </div>
                 </div>
@@ -31,20 +34,16 @@ class DocumentCard extends React.Component {
     }
 
     render() {
+        let val;
+        if (this.props.location.value) {
+            val = this.props.location.value;
+        }
         return (
             <div className="view-wrapper">
+                {val && <Notification message={'  New Document Added!'} />}
                 <div className="view-container">
                     <div className="notification">
                         <h1>Document List</h1>
-
-                        {this.props.notification && (
-                            <div className="success-message">
-                                <Error
-                                    className={'success'}
-                                    errorMessage={'New Document Added'}
-                                />
-                            </div>
-                        )}
                     </div>
                     <div className="list-document ">{this.renderTable()}</div>
                 </div>

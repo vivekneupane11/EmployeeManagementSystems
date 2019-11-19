@@ -1,11 +1,21 @@
 @import '../../assets/styles//base//variables.scss';
 
+@mixin desktop {
+    @media screen and (max-width:1000px) {
+        @content;
+    }
+}
 
 .container {
     background-color: #fff;
     border-radius: 7px;
     width: 100%;
     padding: 25px 60px;
+
+    @include desktop() {
+        width: 100%;
+        padding: 10px;
+    }
 
     .inputfields {
         padding: 10px 0;
@@ -16,6 +26,10 @@
             padding: 10px;
             border-radius: 8px;
             margin: 5px 0;
+
+            @include desktop() {
+                width: 100%;
+            }
         }
 
         textarea {
@@ -52,10 +66,12 @@
         flex-flow: row;
         align-items: center;
 
-        // @media only screen and (max-width: 1023px) {
-        //     flex-flow: column;
-        //     align-items: baseline;
-        // }
+        @include desktop() {
+            display: inline-block;
+            align-items: flex-start;
+        }
+
+
     }
 
     label {
@@ -116,4 +132,9 @@
 
 .upload-form-body {
     padding: 20px 30px;
+
+    @include desktop() {
+        width: 100%;
+        padding: 10px;
+    }
 }

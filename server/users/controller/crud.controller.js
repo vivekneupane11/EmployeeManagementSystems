@@ -4,7 +4,6 @@ async function getallUsers(req, res) {
   try {
     const USERS = req.db.collection("users");
     const result = await USERS.find({}).toArray();
-    console.log(result);
     //  const imagesdata = await req.db.collection('images').findOne({email:})
 
     res.status(201).json({
@@ -55,9 +54,9 @@ async function deleteUsers(req, res) {
 
 async function updateUsers(req, res) {
   try {
-    //BCRYPT PASSWORD BEFORE
-    // const salt = await bcrypt.genSalt(10);
-    // req.body.password = await bcrypt.hash(req.body.password, salt);
+    //     BCRYPT PASSWORD BEFORE
+    //     const salt = await bcrypt.genSalt(10);
+    //     req.body.password = await bcrypt.hash(req.body.password, salt);
 
     let myquery = { _id: ObjectID(req.body._id) };
 
@@ -71,7 +70,7 @@ async function updateUsers(req, res) {
         role: req.body.role,
         department: req.body.department,
         dob: req.body.dob
-        // password: req.body.password
+        //password: req.body.password
       }
     };
 
@@ -79,7 +78,7 @@ async function updateUsers(req, res) {
       .collection("users")
       .updateOne(myquery, newvalues, function(err) {
         if (err) throw err;
-        console.log("1 document updated");
+
         res.send("updated");
       });
   } catch (err) {

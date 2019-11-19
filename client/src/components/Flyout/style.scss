@@ -1,13 +1,21 @@
 @import "assets/styles/colors.scss";
-
+@mixin desktop{
+    @media screen and (max-width:800px){
+        @content;
+    }
+}
 .flyout-background{
     position: absolute;
     top:3em;
-    right: 2.25em;
+    right: 1em;
     z-index: 2;
     width: 10em;
     padding: 0;
     box-shadow: 10px 13px 12px -8px rgba(0,0,0,0.75);
+
+    @include desktop(){
+        right: 0.75em;
+    }
     .flyout{   
         padding-top: 1em;     
         clip-path: polygon(78% 0, 85% 16%, 100% 16%, 100% 100%, 0 100%, 0 18%, 71% 15%);

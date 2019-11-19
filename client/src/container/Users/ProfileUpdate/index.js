@@ -25,7 +25,7 @@ export class ProfileUpdate extends Component {
             address: '',
             contact: '',
             deleted: '',
-            data: {name:"eaa"},
+            data: { name: 'eaa' },
             token_id: token_id
         };
     }
@@ -42,20 +42,20 @@ export class ProfileUpdate extends Component {
             address: this.state.address,
             deleted: this.state.deleted
         };
-               
         request(
             {
-                url: 'http://localhost:4000/getdata',
+                url: 'http://localhost:4000/users',
                 method: 'GET',
                 json: true, // <--Very important!!!
                 body: myJSONObject
             },
             function(error, response, body) {
                 const datas = [];
-                response.body.data.map(data => {
+
+                JSON.parse(response.body.content).map(data => {
                     const obj = {
                         _id: data._id,
-                        name: data.name,
+                        name: data.username,
                         email: data.email,
                         role: data.role,
                         department: data.department,
@@ -64,7 +64,8 @@ export class ProfileUpdate extends Component {
                         contact: data.contact,
                         address: data.address,
                         password: data.password,
-                        deleted: data.deleted
+                        deleted: data.deleted,
+                        imagePath: data.imagePath
                     };
 
                     if (data._id === this.state.id) {
@@ -75,33 +76,18 @@ export class ProfileUpdate extends Component {
                 });
             }.bind(this)
         );
-        request(
-            {
-                url: 'http://localhost:4000/images',
-                method: 'POST',
-                json: true, // <--Very important!!!
-                body: { email: this.state.token_id.email }
-            },
-            function(error, response, body) {
-                console.log(response);
-                if (body.data){
-                    this.setState({
-                    image: body.data.image
-                });
-                }
-               
-            }.bind(this)
-        );
     }
 
     handleEdit(e) {
         e.preventDefault();
-        this.props.history.push(`/${this.state.loggedin}/edituser`, this.state.data);
-    } 
-    
-    render() {     
-        return (     
-                          
+        this.props.history.push(
+            `/${this.state.loggedin}/edituser`,
+            this.state.data
+        );
+    }
+
+    render() {
+        return (
             <ProfileDetails
                 data={this.state.data}
                 image={this.state.image}
@@ -113,12 +99,13 @@ export class ProfileUpdate extends Component {
 ProfileUpdate.propTypes = {
     getdata: PropTypes.func,
     datas: PropTypes.array
-    
-}
+};
 
-const mapStateToProps= state => ({
+const mapStateToProps = state => ({
     datas: state.getdata.datas
-})
+});
 
-
-export default connect(mapStateToProps,{ getdata })(withRouter(ProfileUpdate));
+export default connect(
+    mapStateToProps,
+    { getdata }
+)(withRouter(ProfileUpdate));

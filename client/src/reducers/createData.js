@@ -1,43 +1,44 @@
-const initialState={
-    data:{},
-    response:[],
-    res:{}
-}
+const initialState = {
+    data: {},
+    response: [],
+    res: {},
+    error: {}
+};
 
-export default function (state=initialState,action) {
-    switch(action.type){
+export default function(state = initialState, action) {
+    switch (action.type) {
         case 'CREATE_USER':
             return {
                 response: action.response,
-                data: action.payload  
-            }
+                error: action.error,
+                data: action.payload
+            };
         case 'SEND_EMAIL':
-            return{
+            return {
                 data: action.payload,
-                response: action.response
-            }
+                res: action.response,
+                error: action.error
+            };
         case 'UPDATE_DATA':
-            return{
-                response: action.response,
-            }
+            return {
+                response: action.response
+            };
         case 'CREATE_DEPT':
-            return{
+            return {
                 data: action.payload,
                 response: action.response
-            }
+            };
         case 'UPDATE_DEPT':
-            return{
+            return {
                 data: action.payload,
-                response: action.response,
-            }
+                response: action.response
+            };
         case 'UPDATE_PASSWORD':
-            return{
+            return {
                 res: action.response
-            }
+            };
 
         default:
-            return state; 
-            
+            return state;
+    }
 }
-}
-

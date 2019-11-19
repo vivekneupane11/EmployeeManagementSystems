@@ -14,7 +14,12 @@ export class ViewUser extends Component {
         };
     }
     render() {
-        return <ViewUserTable data={this.props.location.state} />;
+        return (
+            <ViewUserTable
+                data={this.props.location.state}
+                loggedin={this.state.loggedin}
+            />
+        );
     }
 }
 

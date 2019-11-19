@@ -1,6 +1,18 @@
 @import './base/reset';
 @import './base//variables.scss';
 
+@mixin desktop{
+    @media screen and (max-width:800px){
+        @content;
+    }
+}
+
+@mixin mobile{
+    @media screen and (max-width:500px){
+        @content;
+    }
+}
+
 .form-group {
     position: relative;
 
@@ -82,4 +94,8 @@
 
 .input-box {
     padding-top: 20px;
+
+    @include mobile(){
+        width: 15em;
+    }
 }

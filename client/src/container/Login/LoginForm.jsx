@@ -1,15 +1,13 @@
 import React from 'react';
-import 'assets/styles/form.scss';
+import { Link } from 'react-router-dom';
 import Button from 'components/Button/index.jsx';
 import Input from 'components/Input/index.jsx';
 import Error from 'components/Toaster/index.jsx';
-import { Link } from 'react-router-dom';
-
-import 'components/RadioButton/index.jsx';
+import Notification from 'components/Notification';
+import Loading from 'components/LoadingPage/index';
+import 'assets/styles/form.scss';
 
 const LoginForm = props => {
-    console.log(props.isVisible);
-
     return (
         <div>
             <div className="formbox">
@@ -73,17 +71,22 @@ const LoginForm = props => {
                                     />
                                 )}
                             </div>
+                            <div className="">
+                                {props.loading && <Loading />}
+                            </div>
                         </div>
                     </div>
                     <div className="fade-in">
-                        <div className="buttonwrapper">
-                            <Button
-                                buttonName={'LOGIN'}
-                                className={
-                                    'button--size-big button--gradient-primary'
-                                }
-                            />
-                        </div>
+                        {!props.loading && (
+                            <div className="buttonwrapper">
+                                <Button
+                                    buttonName={'LOGIN'}
+                                    className={
+                                        'button--size-big button--gradient-primary'
+                                    }
+                                />
+                            </div>
+                        )}
                     </div>
                 </form>
             </div>

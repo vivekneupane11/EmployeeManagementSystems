@@ -1,13 +1,10 @@
 import React from 'react';
-import 'assets/styles/resetpassword.scss';
-import ValidateField from './ValidateField';
-import request from 'request';
-import ResetPasswordForm from './ResetPasswordForm.jsx';
-import { timeout } from 'q';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { verifyToken, updatePassword } from 'actions';
-
+import ValidateField from './ValidateField';
+import ResetPasswordForm from './ResetPasswordForm.jsx';
+import 'assets/styles/resetpassword.scss';
 
 class ResetPassword extends React.Component {
     constructor(props) {
@@ -29,25 +26,13 @@ class ResetPassword extends React.Component {
     }
     async componentDidMount() {
         //to check if token exists and still valid
-        let tokenObj = {
-            token: this.state.token,
-            email: this.state.email
-        };
 
-        console.log("email",this.state.email)
+        const token = this.state.token;
+        const email = this.state.email;
 
-        this.props.verifyToken(tokenObj);
-        setTimeout(() => {
-            const response = this.props.response;
-            if (response.body.message.success) {
-                this.setState({ isTokenVerified: true });
-            } else {
-                this.setState({ isTokenExpired: true });
-            }
-
-        }, 500);
-        
-        
+        console.log(token);
+        console.log(email);
+        console.log('email', this.state.email);
     }
     handleUserInput = e => {
         //inputs from password and reset password
@@ -71,21 +56,27 @@ class ResetPassword extends React.Component {
             this.setState({ isResetSuccessful: true });
             const obj = {
                 password: this.state.fields['password'],
-                email: this.state.email
+                email: this.state.email,
+                token: this.state.token
             };
             this.props.updatePassword(obj);
             setTimeout(() => {
-                const response= this.props.res;
                 let errors = {};
-                    if (response.body.detail.success) {
-                        this.setState({ isTokenVerified: false });
-                        window.setTimeout(this.props.history.push('/'), 5000);
-                    } else {
-                        errors['email'] = `${response.body.message.error}`;
+
+                if (this.props.res) {
+                    if (this.props.res.data) {
+                        this.props.history.push('/', { value: true });
+                    } else if (this.props.error) {
+                        errors['email'] = `${'Email not registered'}`;
                         this.setState({ errors });
+                    } else {
+                        errors['password'] =
+                            'Error in Token! Send another link';
+                        errors['isValidPassword'] = false;
+                        this.setState({ errors: errors });
                     }
-            }, 500);
-            
+                }
+            }, 2000);
         }
     };
     render() {
@@ -114,13 +105,16 @@ class ResetPassword extends React.Component {
     }
 }
 
-ResetPassword.propTypes={
-    login: PropTypes.func.isRequired,
-}
+ResetPassword.propTypes = {
+    updatePassword: PropTypes.func.isRequired
+};
 
-const mapStateToProps= state => ({
+const mapStateToProps = state => ({
     response: state.getdata.res,
     res: state.createdata.res
-})
+});
 
-export default connect(mapStateToProps, {verifyToken, updatePassword})(ResetPassword);
+export default connect(
+    mapStateToProps,
+    { verifyToken, updatePassword }
+)(ResetPassword);

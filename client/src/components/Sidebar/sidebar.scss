@@ -1,5 +1,16 @@
 @import "assets/styles/colors.scss";
 
+@mixin desktop{
+    @media screen and (max-width:800px){
+        @content;
+    }
+}
+
+@mixin mobile{
+    @media screen and (max-width:500px){
+        @content;
+    }
+}
 .sidebar {
     width: 20%;
     padding: 1em 1em;
@@ -7,6 +18,13 @@
     padding-left: 2em;
     background-image: linear-gradient($primary, #0C2743);
         
+    @include desktop(){
+        width: 8%;
+        padding: 0;
+    }
+    @include mobile(){
+        width: 12%;     
+    }
     .home-link {
         padding: 1em 0.5em;
 
@@ -14,6 +32,10 @@
             margin-left: 20px;
             color: #fff;
             font-weight: bold;
+
+            @include desktop(){
+                display: none;
+            }
         }
     }
 
@@ -40,6 +62,10 @@
             color: #fff;
             flex-basis: 60%;
             font-weight: bold;
+
+            @include desktop(){
+                display: none;
+            }   
         }
     }
 
@@ -57,6 +83,12 @@
     .dropdown-links {
         background-color: $primary;
         padding: 0.25em;
+
+        @include desktop(){
+            position: absolute;
+            z-index: 1;
+            left: 8%;
+        }
 
         .outer-link {
             margin-left: 1em;

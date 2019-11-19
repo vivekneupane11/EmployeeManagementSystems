@@ -1,16 +1,21 @@
-.edit-dept{
+.edit-dept {
     margin: 0.5em;
     flex-basis: 80%;
-    .dept-form{
+
+    .dept-form {
         width: 40%;
         margin: 1em;
         position: relative;
         display: block;
-        margin: 1em auto;        
+        margin: 1em auto;
     }
 }
 
-.validity{
+.validity {
     position: absolute;
     right: 0;
+}
+
+.error-message {
+    padding-bottom: 10px;
 }

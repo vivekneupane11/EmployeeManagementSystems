@@ -1,5 +1,10 @@
 @import "assets/styles/colors.scss";
 
+@mixin mobile{
+    @media screen and (max-width:500px){
+        @content;
+    }
+}
 .navigations {
     width: 100%;
 
@@ -32,7 +37,7 @@
 
         .user-functions {
             display: flex;
-            flex-basis: 22%;
+            flex-basis: 20%;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
@@ -62,19 +67,23 @@
 
     .user-functions {
         .img-div {
-            border: 0.5em solid $active;
-            border-radius: 100%;
-            cursor: pointer;
-
+            border: 0.2em solid $active;
+            cursor: pointer; 
+            display: flex;
+            justify-content: center;   
+            align-items: center;              
             .user-image {
-                width: 30px;
+                width: 40px;
                 border-radius: 100%;
                 height: auto;
+                display: block;
+                max-width: 100%;
             }
         }
 
         .img-div:hover {
-            border: 0.5em solid $primary;
+            border: 0.2em solid $primary;
+            background-color: $primary;
         }
 
         .username {

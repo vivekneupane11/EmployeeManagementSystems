@@ -1,6 +1,6 @@
 @import './base/variables.scss';
 @import './base/mixin.scss';
-$selectors:(success, informational, warning);
+$selectors:(success, informational, warning, notification);
 
 @each $class in $selectors {
     .#{$class} {

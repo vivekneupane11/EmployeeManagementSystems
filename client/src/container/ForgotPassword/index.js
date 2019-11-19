@@ -1,24 +1,23 @@
 import React from 'react';
-import 'assets/styles/forgotpassword.scss';
-import Toaster from 'components/Toaster/index.jsx';
-import ValidateField from 'utils/helpers/ValidateField';
-import ForgotPasswordForm from './ForgotPasswordForm.jsx';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { sendMail } from 'actions';
+import ValidateField from 'utils/helpers/ValidateField';
+import ForgotPasswordForm from './ForgotPasswordForm.jsx';
+import 'assets/styles/forgotpassword.scss';
 
 class ForgotPassword extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            flag: true,
+            flag: false,
+            isEmailSentSuccess: false,
             fields: {
                 email: ''
             },
             errors: {
                 isValidEmail: false
-            },
-            isEmailSentSuccess: false
+            }
         };
     }
     handleChange = e => {
@@ -35,34 +34,35 @@ class ForgotPassword extends React.Component {
     handleSubmit = e => {
         e.preventDefault();
         const error = ValidateField(this.state.fields);
-        console.log(error);
         this.setState({ errors: error });
+
         if (error['isValidEmail']) {
             const obj = {
                 email: this.state.fields['email']
             };
-
+            this.setState({ flag: true });
             this.props.sendMail(obj);
-            
             setTimeout(() => {
-                this.isEmailSentSuccess(); 
+                this.isEmailSentSuccess();
             }, 9000);
         }
     };
 
-    isEmailSentSuccess = () =>{
-        let errors = {};    
-        console.log("lol",this.props.response)
-        if (this.props.response.body.message.success) {
-            this.setState({ isEmailSentSuccess: true });
-        } else {
-            errors['email'] = `${this.props.response.body.message.error}`;
-            this.setState({ errors });
+    isEmailSentSuccess = () => {
+        this.setState({ flag: false });
+        let errors = {};
+        if (this.props.response) {
+            if (this.props.response.data) {
+                this.setState({ isEmailSentSuccess: true });
+            } else if (this.props.error) {
+                errors['email'] = `${'Email not registered'}`;
+                this.setState({ errors });
+            } else {
+                errors['email'] = `Please Check your internet connection`;
+                this.setState({ errors });
+            }
         }
-        
-        
-    }
-
+    };
 
     render() {
         return (
@@ -78,14 +78,17 @@ class ForgotPassword extends React.Component {
     }
 }
 
-ForgotPassword.propTypes={
-    sendMail: PropTypes.func.isRequired,
-}
+ForgotPassword.propTypes = {
+    sendMail: PropTypes.func.isRequired
+};
 
-const mapStateToProps= state => ({
-    response: state.createdata.response,
-    data: state.createdata.data
-})
+const mapStateToProps = state => ({
+    response: state.createdata.res,
+    data: state.createdata.data,
+    error: state.createdata.error
+});
 
-
-export default connect(mapStateToProps, {sendMail})(ForgotPassword);
+export default connect(
+    mapStateToProps,
+    { sendMail }
+)(ForgotPassword);

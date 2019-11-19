@@ -1,8 +1,7 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap.css';
 import AuthorizedRouting from 'routes/routes';
-
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/css/bootstrap.css';
 const App = () => {
     return <AuthorizedRouting />;
 };

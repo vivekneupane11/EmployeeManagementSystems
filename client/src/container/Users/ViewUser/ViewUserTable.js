@@ -1,16 +1,16 @@
 import React from 'react';
 import request from 'request';
+import PropTypes from 'prop-types';
+import decoder from 'jwt-decode';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { deleteData } from 'actions';
-import PropTypes from 'prop-types';
-import img from 'assets/img/User Image - Edit.png';
-import decoder from 'jwt-decode';
 import UploadEmployeeDocument from './UploadEmployeeDocument';
 import ViewDocument from 'container/Document/ViewDocument/ViewDocument.jsx';
 import Button from 'components/Button';
 import Modal from 'components/Modal';
 import EditUser from 'container/Users/EditUser';
+
 class ViewUserTable extends React.Component {
     constructor(props) {
         super(props);
@@ -35,9 +35,9 @@ class ViewUserTable extends React.Component {
         };
 
         this.props.deleteData(myJSONObject);
-        
-        this.props.history.push(`/${this.state.loggedin}`);
 
+        this.props.history.push(`/${this.state.loggedin}/listuser`);
+       
         this.setState({
             display: 'display-none'
         });
@@ -48,44 +48,25 @@ class ViewUserTable extends React.Component {
             display: 'display-none'
         });
     }
-    componentDidMount() {
-        request(
-            {
-                url: 'http://localhost:4000/images',
-                method: 'POST',
-                json: true, // <--Very important!!!
-                body: { email: this.props.data.email }
-            },
-            function(error, response, body) {
-                console.log(response);
 
-                if (body.data) {
-                    this.setState({
-                        image: body.data.image
-                    });
-                }
-            }.bind(this)
-        );
-    }
     render() {
-        const image = <img src={this.state.image} alt="user" />;
+        const image = <img src={this.props.data.imagePath} alt="user" />;
 
         return (
             <div className="view-user">
                 <div className="title d-flex">
-                    <h3>{this.props.data.name}</h3>
+                    <h3>{this.props.data.username}</h3>
                     <div className="d-flex">
-                        <Button
-                            className="button--size-normal button--gradient-primary"
-                            buttonName="Users' List"
+                        <UploadEmployeeDocument
+                            id={this.props.data._id}
+                            loggedin={this.props.loggedin}
                         />
-                        <UploadEmployeeDocument email={this.props.data.email} />
                     </div>
                 </div>
                 <div className="view-user-details">
                     <div className="view-user--detail">
                         <p className="detail-info">
-                            Name: {this.props.data.name}
+                            Name: {this.props.data.username}
                         </p>
                         <p className="detail-info">
                             Department: {this.props.data.department}
@@ -135,10 +116,7 @@ class ViewUserTable extends React.Component {
                 />
 
                 <div className="view-document">
-                    <ViewDocument
-                        individual={true}
-                        email={this.props.data.email}
-                    />
+                    <ViewDocument individual={true} id={this.props.data._id} />
                 </div>
             </div>
         );
@@ -148,11 +126,13 @@ class ViewUserTable extends React.Component {
 ViewUserTable.propTypes = {
     deleteData: PropTypes.func.isRequired,
     response: PropTypes.object.isRequired
-}
+};
 
-const mapStateToProps= state => ({
+const mapStateToProps = state => ({
     response: state.getdata.response
-})
+});
 
-
-export default connect(mapStateToProps, {deleteData})(withRouter(ViewUserTable));
+export default connect(
+    mapStateToProps,
+    { deleteData }
+)(withRouter(ViewUserTable));

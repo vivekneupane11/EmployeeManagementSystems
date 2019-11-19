@@ -58,17 +58,18 @@ export class SideBar extends React.Component {
     render() {
         const obj = decoder(localStorage.getItem('token_id'));
         const role = obj.role.toLowerCase();
-        console.log(role);
         return (
             <div className="sidebar">
                 {(role === 'admin' || role === 'hr') && (
                     <div>
-                        <div className="home-link d-flex justify-flex-start">
-                            <i className="icon icon-home" />
-                            <Link to={`/${role}`}>
+
+                        <Link to={`/${role}`}>
+                            <div className="home-link d-flex justify-flex-start">
+                                <i className="icon icon-home" />
                                 <div className="home">Home</div>
-                            </Link>
-                        </div>
+                                </div>
+                        </Link>
+                        
 
                         <div>
                             <div
@@ -211,11 +212,6 @@ export class SideBar extends React.Component {
                                 id="userOpen"
                                 className="dropdown-links collapse"
                             >
-                                <div className="outer-link">
-                                    <Link to={`/${role}`}>
-                                        <div className="link">List Users</div>
-                                    </Link>
-                                </div>
                                 <div className="outer-link">
                                     <Link to={`/${role}/ehs`}>
                                         <div className="link">

@@ -1,2 +1,0 @@
-# EmployeeManagementSystems
-MERN stack website 

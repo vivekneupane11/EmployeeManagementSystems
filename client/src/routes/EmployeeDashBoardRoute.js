@@ -1,9 +1,7 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import 'assets/styles/basic.scss';
 import 'bootstrap/dist/js/bootstrap.js';
-import 'assets/icons/style.css';
-import '../mainstyle.scss';
+
+import { Switch, Route } from 'react-router-dom';
 import CreateUsers from 'container/Users/CreateUsers';
 import SideBar from 'components/Sidebar';
 import Navigation from 'components/Navigation';
@@ -19,6 +17,11 @@ import UploadDocument from 'container/Document/index.jsx';
 import ViewDocument from 'container/Document/ViewDocument/ViewDocument.jsx';
 import { ProfileUpdate } from 'container/Users/ProfileUpdate';
 import AdminHomePage from 'container/AdminHomePage';
+
+import 'assets/styles/basic.scss';
+import 'assets/icons/style.css';
+import '../mainstyle.scss';
+
 export default function AdminDashboard() {
     return (
         <div>
@@ -26,10 +29,14 @@ export default function AdminDashboard() {
             <div className="content d-flex flex-row">
                 <SideBar />
                 <div className="inner-content">
-                    <div className="bg-white position-absolute my-3 mx-5 col-11 shadow">
+                    <div className="bg-white position-absolute col-11 shadow contents">
                         <Switch>
                             <Route path="/hr" exact component={AdminHomePage} />
-                            <Route path="/hr/listuser" exact component={ListUsers} />
+                            <Route
+                                path="/hr/listuser"
+                                exact
+                                component={ListUsers}
+                            />
                             <Route
                                 path="/hr/createusers"
                                 exact

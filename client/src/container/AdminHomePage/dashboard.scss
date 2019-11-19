@@ -1,0 +1,66 @@
+@import "assets/styles/colors.scss";
+
+.dashboard {
+    padding: 2em;
+
+    h3 {
+        color: $primary;
+        font-weight: bold;
+    }
+
+    .card {
+        background-color: #fff;
+        box-shadow: 0px 1px 10px 0px #aaaaaa;
+        width: 13em;
+        margin: 0.25em;
+
+        .card-title {
+            color: #bbbbbb;
+            width: 100%;
+            justify-content: flex-start;
+            margin: 2em 1.5em;
+            margin-bottom: 0.5em;
+            font-size: 0.9em;
+            font-weight: bold;
+        }
+
+        .card-icon {
+            color: $seafoam;
+            margin: 0 0.25em;
+        }
+
+        .card-body {
+            font-size: 2em;
+            padding: 0.5em 1em;
+            padding-bottom: 1em;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #888888;
+        }
+    }
+
+    .legend {
+        width: 10em;
+        padding: 1em 2em;
+        box-shadow: 0px 1px 10px 0px #aaaaaa;
+
+        .icon-go {
+            margin-right: 1em;
+        }
+
+        .admin {
+            color: $primary;
+        }
+
+        .hr {
+            color: #269A90;
+        }
+
+        .emp {
+            color: #BC3333;
+        }
+    }
+
+
+
+}

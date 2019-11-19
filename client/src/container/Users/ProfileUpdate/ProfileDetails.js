@@ -19,13 +19,12 @@ class ProfileDetails extends React.Component {
     }
 
     render() {
-        console.log("this2")
         return (
             <div className="view-user">
                 <div className="title d-flex">
                     <h3>{this.props.data.name}</h3>
                 </div>
-                <div className="view-user-details">
+                <div className="view-user-details col-md-12">
                     <div className="view-user--detail">
                         <p className="detail-info">
                             Name: {this.props.data.name}
@@ -54,7 +53,11 @@ class ProfileDetails extends React.Component {
                     </div>
 
                     <div className="image-user">
-                        <img src={this.props.image} alt="profile" />
+                        <img
+                            className="img-responsive"
+                            src={this.props.data.imagePath}
+                            alt="profile"
+                        />
                         <div className="buttons d-flex justify-content-between">
                             <div className="buttons--button">
                                 {/* <Button
@@ -62,11 +65,8 @@ class ProfileDetails extends React.Component {
                                     buttonName="Edit"
                                     handleClick={this.props.handleEdit}
                                 /> */}
-                                
-                                <EditUser
-                                                              
-                                />
-                               
+
+                                <EditUser />
                             </div>
                         </div>
                     </div>

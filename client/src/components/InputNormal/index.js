@@ -3,9 +3,11 @@ import './style.scss';
 
 const InputNormal = props => {
     return (
-        <div className="input-box">
+        <div className="input-box normal-input">
             <div className="form-group">
-                <label className="input--label" htmlFor={props.label}>{props.label}</label>
+                <label className="input--label" htmlFor={props.label}>
+                    {props.label}
+                </label>
                 <input
                     className="form-control input-form"
                     type={props.type}

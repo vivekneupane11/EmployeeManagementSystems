@@ -2,6 +2,18 @@
 @import 'assets/styles//base//variables.scss';
 @import '../../../assets/icons/style.css';
 
+@mixin desktop {
+    @media screen and (max-width:700px) {
+        @content;
+    }
+}
+
+@mixin mobile {
+    @media screen and (max-width:428px) {
+        @content;
+    }
+}
+
 .view-container {
     background-color: #fff;
     display: flex;
@@ -10,9 +22,16 @@
     padding: 25px 40px;
     border-radius: 7px;
 
+    @include mobile() {
+        padding: 10px;
+    }
+
+    @include desktop() {
+        padding: 10px;
+    }
 
     .notification {
-        width: 100%;
+        width: 45%;
         display: flex;
         padding-bottom: 50px;
         align-items: center;
@@ -20,6 +39,10 @@
 
         h1 {
             color: #143A65;
+
+            @include desktop() {
+                font-size: 30px;
+            }
         }
 
         .success-message {
@@ -41,6 +64,15 @@
     box-shadow: 0px 0px 3px 0px grey;
     border-radius: 7px;
 
+    @include desktop() {
+        width: 48%;
+
+    }
+
+    @include mobile() {
+        width: 100%;
+
+    }
 
     .document-header {
         display: flex;

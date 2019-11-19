@@ -1,82 +1,82 @@
-import React,{Component, Fragment} from 'react';
-import { withRouter } from 'react-router-dom';
+import React, { Component } from 'react';
+import { withRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { createDept } from 'actions';
-
+import { createDept, notification } from 'actions';
 import './style.scss';
 import DepartmentForm from './DepartmentForm';
-import request from 'request';
 
 class CreateDepart extends Component {
+    state = {
+        error: '',
+        name: '',
+        namevalid: ''
+    };
 
-    state={
-        name:'',
-        namevalid:'',        
-    }
-
-    handleChange = (event) => {
-        const value= event.target.value;
+    handleChange = event => {
+        const value = event.target.value;
         this.setState({
-            name: value
-        })
+            name: value,
+            error: ''
+        });
 
-        
-        if ((/^[A-Z][a-z]+(([',. -][A-Z][a-z])?[a-zA-Z]*)*$/).test(value)){
-            this.setState({namevalid: 'valid'})
+        if (/^[A-Z][a-z]+(([',. -][A-Z][a-z])?[a-zA-Z]*)*$/.test(value)) {
+            this.setState({ namevalid: 'valid' });
+        } else {
+            this.setState({ namevalid: 'invalid' });
         }
-        else{
-            this.setState({namevalid: 'invalid'})
-        }
-        
-    }
+    };
 
-    handleClick(e){
+    handleClick(e) {
         e.preventDefault();
-        if (this.state.name !== "" && this.state.namevalid==="valid"){
+        if (this.state.name !== '' && this.state.namevalid === 'valid') {
             var myJSONObject = {
-               "name": this.state.name,
-    
+                search: this.state.name,
+                departmentName: this.state.name
             };
-
             this.props.createDept(myJSONObject);
-            // request({
-            //     url: "http://localhost:4000/department",
-            //     method: "POST",
-            //     json: true,   // <--Very important!!!
-            //     body: myJSONObject
-            // }, function (error, response, body){
-            //     alert(response.body);
-            // });
-       
-            this.props.history.push('/admin/listdept');
-        }
-
-        else if (this.state.namevalid === "invalid"){
-            alert("invalid");
-        }
-
-        else if (this.state.name ===""){
-            alert("Field empty");
+            setTimeout(() => {
+                if (this.props.response.success) {
+                    this.props.notification(
+                        `New department '${this.state.name}' has been created`
+                    );
+                    this.props.history.push('/admin/listdept');
+                } else this.setState({ error: this.props.response.error });
+            }, 1000);
+        } else if (this.state.namevalid === 'invalid') {
+            this.setState({ error: 'Invalid Department-name' });
+        } else if (this.state.name === '') {
+            this.setState({ error: 'Empty Field' });
         }
     }
-
 
     render() {
-        const {name, namevalid} = this.state;
+        const { name, namevalid, error } = this.state;
         return (
-            
-            <DepartmentForm name={name} namevalid={namevalid} handleChange={this.handleChange} handleClick={(e) => {this.handleClick(e)}}/>
-            
-        )
+            <div>
+                <DepartmentForm
+                    error={error}
+                    name={name}
+                    namevalid={namevalid}
+                    handleChange={this.handleChange}
+                    handleClick={e => {
+                        this.handleClick(e);
+                    }}
+                />
+            </div>
+        );
     }
 }
 
-CreateDepart.propTypes={
+CreateDepart.propTypes = {
     createDept: PropTypes.func.isRequired,
-}
+    notification: PropTypes.func.isRequired
+};
 
-const mapStateToProps= state => ({
+const mapStateToProps = state => ({
     response: state.createdata.response
-})
-export default connect(mapStateToProps, {createDept}) (withRouter(CreateDepart));
+});
+export default connect(
+    mapStateToProps,
+    { createDept, notification }
+)(withRouter(CreateDepart));

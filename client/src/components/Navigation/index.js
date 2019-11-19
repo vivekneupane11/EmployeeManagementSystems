@@ -15,10 +15,6 @@ class Navigation extends Component {
         showFlyout: false
     };
 
-    componentDidMount() {
-        this.props.getdata();
-    }
-
     handleClick() {
         const Auth = new AuthHelperMethods();
         Auth.logout();
@@ -28,6 +24,7 @@ class Navigation extends Component {
 
     showFlyout(e) {
         e.preventDefault();
+        this.props.getdata();
         const { showFlyout } = this.state;
 
         showFlyout
@@ -50,11 +47,10 @@ class Navigation extends Component {
         this.setState({
             showFlyout: false
         });
-        console.log(this.props.datas);
 
-        this.props.datas.map(data => {
-            if (obj.id === data._id) {
-                thedata = data;
+        this.props.datas.map(adata => {
+            if (obj.id === adata._id) {
+                thedata = adata;
             }
         });
 
@@ -63,8 +59,10 @@ class Navigation extends Component {
 
     render() {
         const obj = decoder(localStorage.getItem('token_id'));
-        const name = obj.name;
+        const name = obj.username;
         const loggedin = obj.role.toLowerCase();
+        const imagePath = obj.imagePath;
+
         return (
             <div className="navigations">
                 <nav className="navbar navbar-expand-lg navbar-custom">
@@ -81,12 +79,11 @@ class Navigation extends Component {
                                 >
                                     <img
                                         className="user-image"
-                                        src={img}
+                                        src={imagePath}
                                         alt="x"
                                     />
+                                    <i className="icon-triangle-down" />
                                 </div>
-
-                                <i className="icon-triangle-down" />
                             </div>
 
                             {this.state.showFlyout && (
@@ -105,7 +102,8 @@ class Navigation extends Component {
 }
 
 Navigation.propTypes = {
-    getdata: PropTypes.func
+    getdata: PropTypes.func,
+    datas: PropTypes.array
 };
 
 const mapStateToProps = state => ({
