@@ -1,0 +1,11 @@
+.content{
+    height: 89vh;  
+
+    .inner-content{
+        height: 89vh;      
+        background-color: #f8f8f8;
+        width: 100%;
+        overflow: auto;
+        position: relative;
+    }
+}

@@ -1,0 +1,38 @@
+@import "assets/styles/colors.scss";
+
+.flyout-background{
+    position: absolute;
+    top:3em;
+    right: 2.25em;
+    z-index: 2;
+    width: 10em;
+    padding: 0;
+    box-shadow: 10px 13px 12px -8px rgba(0,0,0,0.75);
+    .flyout{   
+        padding-top: 1em;     
+        clip-path: polygon(78% 0, 85% 16%, 100% 16%, 100% 100%, 0 100%, 0 18%, 71% 15%);
+        background-color: #ffffff;
+    
+        .flyout--list{
+            width: 100%;
+            position: static;
+            border-radius: 0;
+            text-align: center;
+            background-color:#fff;
+        }   
+        li{
+            color: black;
+            cursor: pointer;
+        }
+        li:hover{
+            color: #ffffff;
+            background-color: $hover;
+        }
+        li:active{
+            color: #ffffff;
+            background-color: $active;
+        }
+    }
+    
+}
+

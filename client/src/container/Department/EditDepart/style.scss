@@ -1,0 +1,16 @@
+.edit-dept{
+    margin: 0.5em;
+    flex-basis: 80%;
+    .dept-form{
+        width: 40%;
+        margin: 1em;
+        position: relative;
+        display: block;
+        margin: 1em auto;        
+    }
+}
+
+.validity{
+    position: absolute;
+    right: 0;
+}

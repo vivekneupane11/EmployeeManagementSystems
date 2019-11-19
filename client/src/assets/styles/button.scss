@@ -1,0 +1,67 @@
+@import './base/variables.scss';
+@import './base/mixin.scss';
+
+
+.button--size-big {
+    width: 160px;
+    height: 35px;
+    outline: none;
+    border: none;
+
+}
+
+.button--size-normal {
+    width: 120px;
+    height: 35px;
+}
+
+.button--size-small {
+    width: 100px;
+    height: 30px;
+}
+
+.button--gradient-primary {
+    @include button();
+    background-image: linear-gradient(#184D85, #0C2743);
+
+    &:hover {
+        background-image: linear-gradient(#123C69, #091E35);
+        color: white;
+    }
+
+    &:active {
+        background-image: linear-gradient(#222D51, #070910);
+    }
+}
+
+.button--gradient-secondary1 {
+    @include button();
+    background-image: linear-gradient(#E53838, #731C1C);
+
+    &:hover {
+        color: white;
+        background-image: linear-gradient(#BC3333, #5E1A1A);
+    }
+
+    &:active {
+        background-image: linear-gradient(#801f1f, #401010);
+    }
+}
+
+.button--gradient-secondary2 {
+    @include button();
+
+    background-image: linear-gradient(#269A90, #134D48);
+
+    &:hover {
+        @include button();
+        color: white;
+
+
+        background-image: linear-gradient(#269A90, #134D48);
+    }
+
+    &:active {
+        background-image: linear-gradient(#1A6d66, #0D3733);
+    }
+}

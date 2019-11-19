@@ -1,0 +1,117 @@
+@import "assets/styles/colors.scss";
+
+.user-table {
+    display: block;
+    margin: 2em auto;
+    width: 90%;
+
+    h3 {
+        color: $active;
+        font-weight: bold;
+        margin: 0;
+    }
+
+    .search {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .ehs {
+            width: 20%;
+            height: 2.5em;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            box-shadow: 0px 3px 4px 0px rgba(191, 198, 201, 1);
+            font-size: 0.75em;
+            background-color: $primary;
+        }
+
+        .ehs:hover {
+            background-color: $hover;
+        }
+
+        .ehs:active {
+            background-color: $active;
+        }
+    }
+
+    .table {
+        margin: 2em 0;
+    }
+
+    th {
+        font-weight: medium;
+    }
+
+    td {
+        color: #777777;
+        padding: 0.75em 0em;
+        padding-left: 0.25em;
+
+        // .view-details-button{
+        //     background-color: $primary;
+        //     height: 2.5em;
+        //     border-style: none;
+        //     border-radius: 5px;
+        //     color: #fff;
+        //     width: 100%;
+        //     font-size: 0.75em;
+        // }
+        // .view-details-button:hover{
+        //     background-color: $hover;
+        // }
+
+        // .view-details-button:active{
+        //     background-color: $active;
+        // }
+    }
+
+    .name {
+        color: $primary;
+    }
+
+    .pagination {
+        box-shadow: none;
+        border: 1px solid #eeeeee;
+        width: fit-content;
+        width: -moz-fit-content;
+        position: static;
+
+        .page-item {
+            color: #aaaaaa;
+            width: 2em;
+            text-align: center;
+        }
+
+        .page-item:hover {
+            color: #fff;
+            background-color: $hover;
+        }
+
+        .page-item:active {
+            color: #fff;
+            background-color: $active;
+        }
+
+        .page-item:first-child,
+        .page-item:last-child {
+            background-color: #eee;
+            color: #000000;
+            width: 2.5em;
+        }
+
+        .page-active {
+            background-color: $active;
+            color: #fff;
+
+        }
+
+    }
+
+}
+
+.search-user {
+    width: 50%;
+}

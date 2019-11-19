@@ -1,0 +1,119 @@
+@import '../../assets/styles//base//variables.scss';
+
+
+.container {
+    background-color: #fff;
+    border-radius: 7px;
+    width: 100%;
+    padding: 25px 60px;
+
+    .inputfields {
+        padding: 10px 0;
+
+        input {
+            width: 70%;
+            border: 1px solid map-get($map: $colors, $key: "primary");
+            padding: 10px;
+            border-radius: 8px;
+            margin: 5px 0;
+        }
+
+        textarea {
+            width: 70%;
+            border: 1px solid map-get($map: $colors, $key: "primary");
+            padding: 10px;
+            border-radius: 8px;
+            height: 150px;
+            margin: 5px 0;
+
+        }
+
+        .inputfile {
+            padding: 0px;
+            width: 0.1px;
+            height: 0.1px;
+            opacity: 0;
+            overflow: hidden;
+            position: absolute;
+            z-index: -1;
+        }
+
+    }
+
+    .error {
+        input {
+            background-color: red;
+        }
+    }
+
+
+    .filename {
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+
+        // @media only screen and (max-width: 1023px) {
+        //     flex-flow: column;
+        //     align-items: baseline;
+        // }
+    }
+
+    label {
+        margin-left: auto;
+        padding: 14px 15px;
+        border-radius: 7px;
+        color: white;
+        cursor: pointer;
+        background-color: map-get($map: $activecolors, $key: "primary");
+
+        // @media only screen and (max-width: 1023px) {
+        //     margin-left: 0px;
+        // }
+
+
+    }
+
+    i {
+        color: white;
+        padding: 0 10px;
+    }
+
+    p {
+        color: map-get($map: $activecolors, $key: "primary");
+    }
+
+}
+
+.radio {
+    display: flex;
+    align-items: center;
+
+    input[type="radio"] {
+        width: 20px;
+    }
+}
+
+.header {
+
+    .heading {
+        color: map-get($map: $hovercolors, $key:"primary");
+        padding: 20px 0;
+    }
+
+    p {
+        color: #6C6F78;
+    }
+}
+
+
+.description {
+
+    display: flex;
+    flex-flow: column;
+
+
+}
+
+.upload-form-body {
+    padding: 20px 30px;
+}

@@ -1,0 +1,48 @@
+@import './base/reset';
+@import './base/variables.scss';
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,300i,400,500,500i,600,600i,700,700i&display=swap');
+body{
+    font-family: 'Poppins', sans-serif;  
+   
+}
+h1{
+font-size: 40px;
+font-weight: 800
+}
+h2{
+    font-size: 32px;
+font-weight: 700
+
+}
+h3{
+font-size: 24px;
+font-weight: 600
+
+}
+h4{
+    font-size: 20px;
+font-weight: 500;
+
+}
+h5{
+    font-size: 40px;
+font-weight: 800
+}
+p{
+    font-size: 18px;
+font-weight: 400
+}
+p{
+    color:#888888;
+    font-size: 14px;
+}
+a{
+    font-size: 14px;
+    color:map-get($colors,"primary")
+}
+a:hover{
+    color:map-get($hovercolors,"primary")
+}
+a:active{
+    color:map-get($activecolors,"primary")
+}

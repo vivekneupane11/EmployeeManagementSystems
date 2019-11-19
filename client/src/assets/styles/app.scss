@@ -1,0 +1,135 @@
+@import './basic.scss';
+
+@import url('https://fonts.googleapis.com/css?family=Poppins:300,300i,400,500,500i,600,600i,700,700i&display=swap');
+
+body{
+    font-family: 'Poppins', sans-serif;   
+}
+h1{
+    font-size: 40pt;
+    font-weight: 800
+    }
+@import './base/variables.scss';
+@media only screen and (max-width: 1023px) {
+    img {
+      display: none;
+    }
+    .container-outer{
+        box-shadow: unset;
+    }
+    .form-box{
+        width: 100%;
+        padding:10px;
+    }
+  }
+  .bg-color{
+      background-color: #ddd;
+      width: 100%;
+      height: 100vh;
+  }
+.container-outer{ 
+    margin:0 auto;
+    overflow: hidden;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    // border:1px solid grey;
+    border-radius: 10px;
+    box-shadow:0px 3px 6px  rgba(#111,0.1);
+    @media only screen and (max-width: 425px) {
+        // box-shadow: unset;
+        width: 100%;
+        
+      }
+      @media only screen and (max-width: 768px) {
+        // box-shadow: unset;
+        width: 85%;
+      }
+      @media only screen and (max-width: 375px) {
+        box-shadow: unset;
+        width: 100%;
+      }
+}
+.dr{
+    width: 100%;
+    display: flex;
+   
+   
+}
+.image-box{
+    
+    overflow: hidden;
+    position: relative;
+    margin-right: 1px;
+    .image-overlay{
+        position:absolute;
+        height: 600px;
+        width: 540px;
+        background-color:black;
+        z-index: 4;
+        opacity: 0.3;
+    }
+}
+
+.image-text{
+z-index: 5;
+    // border:1px solid red;
+    box-sizing: border-box;
+    color:white;
+    text-align: center;
+    position: absolute;
+    padding: 0 60px;
+
+    // color:black;
+    /* border:1px solid blue; */
+    // padding:0 75px;
+    top:60px;
+    // transform: translate(-50%, -50%);
+    // line-height: 50px;
+    h2{
+        font-size: 30px;
+        word-spacing: 8px;
+        line-height: 40px;
+    }
+
+    .image-text-descp{
+        padding-top: 20px;
+        color:white;
+        font-style: italic;
+    }
+}
+img{
+    
+    object-fit: contain;
+    height: 600px;
+   
+}
+.form-box{
+    background-color: #fff;
+    padding: 70px 70px;
+    width: 560px;
+    @media only screen and (max-width: 1023px) {
+        padding: 10px;
+    width:100%}
+
+    }
+.form-header{
+    text-align: center;
+    // padding-bottom: 15px;
+   
+    .form-heading{
+        color:map-get($hovercolors,"primary" );
+        // font-size: 30px;
+        padding-bottom: 5px;
+    }
+    .form-descp{
+        font-style: italic; 
+        padding: 13px 0;
+        color: #888888;
+        word-spacing: 2px;
+   p{
+    font-size: 10pt;
+   }
+}
+}

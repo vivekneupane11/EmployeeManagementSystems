@@ -1,0 +1,44 @@
+@import "assets/styles/colors.scss";
+
+.view-dept{
+    width: 95%;
+    margin: 2em auto;
+    
+    .title{
+        flex-direction: row;  
+        justify-content: space-between;
+        width: 100%;
+        
+        h3{
+            flex-basis: 10%;
+        }
+        .buttons{
+            flex-basis: 27%;
+            display: flex;
+            flex-direction: row;   
+            justify-content: space-between         
+        }
+    }
+
+    .view-dept-table{
+        margin-top: 2em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        width: 100%;
+
+        .detail-info{
+            font-size: 1em;
+            color: #000;
+            font-weight: 300;
+            margin-bottom: 2em;
+        }
+       
+
+        img{
+            width: 40vh;
+            height: auto;
+        }
+    }    
+}

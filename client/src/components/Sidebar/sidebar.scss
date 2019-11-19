@@ -1,0 +1,93 @@
+@import "assets/styles/colors.scss";
+
+.sidebar {
+    width: 20%;
+    padding: 1em 1em;
+    height: 89vh;
+    padding-left: 2em;
+    background-image: linear-gradient($primary, #0C2743);
+        
+    .home-link {
+        padding: 1em 0.5em;
+
+        .home {
+            margin-left: 20px;
+            color: #fff;
+            font-weight: bold;
+        }
+    }
+
+    .home-link:hover {
+        background-color: $hover;
+    }
+
+    .home-link:active {
+        background-color: $active;
+    }
+
+    .dropdown-link {
+        padding: 1em 0.5em;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+
+        .top-link {
+            text-decoration: none;
+            padding: 0 0.5em;
+            color: #fff;
+            flex-basis: 60%;
+            font-weight: bold;
+        }
+    }
+
+    .dropdown-link:hover {
+        background-color: $hover;
+    }
+
+    .dropdown-link:active {
+        background-color: $active;
+    }
+
+
+
+
+    .dropdown-links {
+        background-color: $primary;
+        padding: 0.25em;
+
+        .outer-link {
+            margin-left: 1em;
+            padding: 0.5em 0;
+            border-left: $seafoam 1px solid;
+
+            .link {
+                text-decoration: none;
+                color: #fff;
+                margin: 0 1em;
+                padding: 0.3em 0.75em;
+                border: none;
+                border-radius: 3px;
+
+            }
+
+            .link:hover {
+                text-decoration: none;
+                background-color: $hover;
+            }
+
+            .link:active {
+                text-decoration: none;
+                background-color: $active;
+            }
+        }
+
+
+    }
+}
+
+.icon {
+    color: #fff;
+}

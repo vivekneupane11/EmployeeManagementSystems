@@ -1,0 +1,26 @@
+@import './base/variables.scss';
+@import './base/mixin.scss';
+$selectors:(success, informational, warning);
+
+@each $class in $selectors {
+    .#{$class} {
+        @if ($class=="warning") {
+            @include warning();
+            background-color: map-get($colors, secondary1)
+        }
+
+        @else if ($class=="success") {
+            @include warning();
+            background-color: map-get($colors, secondary2)
+        }
+
+        @else if ($class=="informational") {
+            @include warning();
+            background-color: map-get($colors, primary)
+        }
+
+        span {
+            text-transform: uppercase;
+        }
+    }
+}

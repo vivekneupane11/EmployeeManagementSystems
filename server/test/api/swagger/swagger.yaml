@@ -1,0 +1,437 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Employee Management System
+# during dev, should point to your local machine
+host: localhost:4000
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /register:
+    post:
+      description: Helps in doing registration with different required parameters
+      # used as the method name of the controller
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person who is being registered
+          required: true
+          type: string
+          
+        - name: age
+          in: query
+          description: The age of the person who is being registered
+          required: true
+          type: number
+          
+        - name: email
+          in: query
+          description: The email of the person who is getting registered that will be used during login
+          required: true
+          type: string
+          
+        - name: password
+          in: query
+          description: Password needed to register and login
+          required: true
+          type: string
+          
+        - name: contact
+          in: query
+          description: Contact of the person getting registered
+          required: true
+          type: number
+          
+        - name: address
+          in: query
+          description: Address of the person getting registered
+          required: true
+          type: string
+          
+        - name: role
+          in: query
+          description: Role of the person getting registered 
+          required: true
+          type: string
+          
+        - name: department
+          in: query
+          description: Department of the person getting registered 
+          required: true
+          type: string
+          
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /login:
+    
+    post:
+      description: After user is registered s/he goes to the login page 
+      # used as the method name of the controller
+      parameters:
+        - name: Email
+          in: query
+          description: Email that is already registered
+          required: true
+          type: string
+          
+        - name: Password
+          in: query
+          description: Password of the person who is logging in
+          required: true
+          type: string
+          
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+            
+  /department:
+    
+    post:
+      description: Department to be registered
+      # used as the method name of the controller
+      parameters:
+        - name: Name
+          in: query
+          description: Department to be registered
+          required: true
+          type: string
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        "400":
+          description: Department already registered.
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+        "304":
+          description: Department has been registered
+            
+  /getdata:
+    
+    post:
+      description: This lists all the data that is in the database
+      # used as the method name of the controller
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person who is already registered
+          required: true
+          type: string
+          
+        - name: age
+          in: query
+          description: The age of the person who is already registered
+          required: true
+          type: number
+          
+        - name: email
+          in: query
+          description: The email of the person who is already in the registration mail 
+          required: true
+          type: string
+          
+        - name: password
+          in: query
+          description: Password needed to register and login
+          required: true
+          type: string
+          
+        - name: contact
+          in: query
+          description: Contact of the person getting registered
+          required: true
+          type: number
+          
+        - name: address
+          in: query
+          description: Address of the person getting registered
+          required: true
+          type: string
+          
+        - name: role
+          in: query
+          description: Role of the person getting registered 
+          required: true
+          type: string
+          
+        - name: department
+          in: query
+          description: Department of the person getting registered 
+          required: true
+          type: string
+          
+          
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /deletedata:
+    
+    post:
+      description: Data to be deleted according to email
+      # used as the method name of the controller
+      parameters:
+        - name: Email
+          in: query
+          description: Email to be deleted
+          required: true
+          type: string
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        "204":
+          description: Data not deleted
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  
+  /updatedata:
+    
+    post:
+      description: Data to be updated according to id
+      # used as the method name of the controller
+      parameters:
+        - name: Email
+          in: query
+          description: we check from id to be updated as it is unique
+          required: true
+          type: string
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /resetpassword/sendlinktoemail:
+    
+    post:
+      description: Data to be updated according to id
+      # used as the method name of the controller
+      parameters:
+        - name: Email
+          in: query
+          description: The link will be sent to this email id and after clicking the link to the mail the user will be redirected to reset password
+          required: true
+          type: string
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /resetpassword/verifytoken:
+    
+    post:
+      description: Token Verification
+      # used as the method name of the controller
+      parameters:
+        - name: Email
+          in: query
+          description: This is required for the verification of Token that is given
+          required: true
+          type: string
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /resetpassword/updatepassword:
+    
+    post:
+      description: Data to be updated according to email
+      # used as the method name of the controller
+      parameters:
+        - name: Email
+          in: query
+          description: This is required to update the password 
+          required: true
+          type: string
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  /deptgetdata:
+    
+    post:
+      description: This lists all the data that is in the database
+      # used as the method name of the controller
+      parameters:
+        - name: name
+          in: query
+          description: The name of the person who is already registered
+          required: true
+          type: string
+          
+        - name: age
+          in: query
+          description: The age of the person who is already registered
+          required: true
+          type: number
+          
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        "500":
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+            
+            
+  /deptdeletedata:
+    
+    post:
+      description: deletes the data present in the department
+      # used as the method name of the controller
+      parameters:
+        - name: name
+          in: query
+          description: The name of the department who is already registered
+          required: true
+          type: string
+        
+          
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        "204":
+          description: Data not deleted
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+            
+  /deptupdatedata:
+    
+    post:
+      description: updates the data present in the department according to id
+      # used as the method name of the controller
+      parameters:
+        - name: name
+          in: query
+          description: Updates the name of the department according to id.
+          required: true
+          type: string
+          
+        
+          
+        
+      responses:
+        "200":
+          description: Success
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/HelloWorldResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+            
+  
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  HelloWorldResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
+
+

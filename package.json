@@ -1,0 +1,37 @@
+{
+  "name": "employee_mgmt_system",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/bitsbeat-core/employee_mgmt_system.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/bitsbeat-core/employee_mgmt_system/issues"
+  },
+  "homepage": "https://gitlab.com/bitsbeat-core/employee_mgmt_system#readme",
+  "dependencies": {
+    "async": "^3.1.0",
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^3.2.7",
+    "multer": "^1.4.2",
+    "nodemailer": "^6.3.0",
+    "nodemon": "^1.19.1",
+    "path": "^0.12.7",
+    "swagger": "^0.7.5"
+  }
+}

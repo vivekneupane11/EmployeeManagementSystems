@@ -1,0 +1,115 @@
+@import '../../../assets/styles/basic.scss';
+@import 'assets/styles//base//variables.scss';
+@import '../../../assets/icons/style.css';
+
+.view-container {
+    background-color: #fff;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 25px 40px;
+    border-radius: 7px;
+
+
+    .notification {
+        width: 100%;
+        display: flex;
+        padding-bottom: 50px;
+        align-items: center;
+        justify-content: space-between;
+
+        h1 {
+            color: #143A65;
+        }
+
+        .success-message {
+            margin-left: auto;
+            // padding-right: 83px;
+        }
+    }
+}
+
+.document-row {
+    display: flex;
+    flex-flow: column;
+    max-width: 100%;
+    width: 31%;
+    height: 300px;
+    margin-right: 5px;
+    margin-top: 20px;
+    word-wrap: break-word;
+    box-shadow: 0px 0px 3px 0px grey;
+    border-radius: 7px;
+
+
+    .document-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 1px solid rgb(250, 248, 248);
+        background-color: #EDEDED;
+        text-transform: uppercase;
+        color: #143A65;
+        height: 24%;
+
+        .card-title {
+            word-wrap: break;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 10px;
+        }
+
+    }
+
+    .document-body {
+        padding: 26px 30px;
+        height: 50%;
+        display: flex;
+
+        justify-content: center;
+
+        p {
+            word-wrap: break;
+            white-space: pre-wrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    }
+
+    .document-footer {
+        border-top: 1px solid white;
+        height: 26%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #EDEDED;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+        font-style: italic;
+        word-wrap: break;
+        // white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+
+        a {
+            padding: 0 10px;
+        }
+
+
+    }
+
+    &:hover {
+        box-shadow: 1px 1px 3px 2px grey;
+
+    }
+}
+
+.list-document {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: space-between;
+
+}

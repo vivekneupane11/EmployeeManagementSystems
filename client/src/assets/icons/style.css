@@ -1,0 +1,128 @@
+@font-face {
+  font-family: 'Project-1-EMS';
+ 
+  src:  url('fonts/Project-1-EMS.ttf?1rya3x') format('truetype'),
+      url('fonts/Project-1-EMS.svg?1rya3x#Project-1-EMS') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+i {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'Project-1-EMS' !important;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-add:before {
+  content: "\e900";
+}
+.icon-add-document:before {
+  content: "\e901";
+}
+.icon-alert-error:before {
+  content: "\e902";
+}
+.icon-alert-info:before {
+  content: "\e903";
+}
+.icon-arrow-left:before {
+  content: "\e904";
+}
+.icon-arrow-right:before {
+  content: "\e905";
+}
+.icon-bell:before {
+  content: "\e906";
+}
+.icon-checkmark:before {
+  content: "\e907";
+}
+.icon-cross:before {
+  content: "\e908";
+}
+.icon-delete:before {
+  content: "\e909";
+}
+.icon-document:before {
+  content: "\e90a";
+}
+.icon-download:before {
+  content: "\e90b";
+}
+.icon-edit:before {
+  content: "\e90c";
+}
+.icon-email:before {
+  content: "\e90d";
+}
+.icon-eye:before {
+  content: "\e90e";
+}
+.icon-eye-slash:before {
+  content: "\e90f";
+}
+.icon-full-triangle-down:before {
+  content: "\e910";
+}
+.icon-full-triangle-up:before {
+  content: "\e911";
+}
+.icon-go:before {
+  content: "\e912";
+}
+.icon-heart:before {
+  content: "\e913";
+}
+.icon-home:before {
+  content: "\e914";
+}
+.icon-menu-bar:before {
+  content: "\e915";
+}
+.icon-menu-bar-dot:before {
+  content: "\e916";
+}
+.icon-menu-dot:before {
+  content: "\e917";
+}
+.icon-phone:before {
+  content: "\e918";
+}
+.icon-reload:before {
+  content: "\e919";
+}
+.icon-search:before {
+  content: "\e91a";
+}
+.icon-triangle-down:before {
+  content: "\e91b";
+}
+.icon-triangle-left:before {
+  content: "\e91c";
+}
+.icon-triangle-right:before {
+  content: "\e91d";
+}
+.icon-triangle-up:before {
+  content: "\e91e";
+}
+.icon-upload:before {
+  content: "\e91f";
+}
+.icon-user:before {
+  content: "\e920";
+}
+.icon-zoom-in:before {
+  content: "\e921";
+}
+.icon-zoom-out:before {
+  content: "\e922";
+}

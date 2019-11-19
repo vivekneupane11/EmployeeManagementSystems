@@ -1,0 +1,40 @@
+@import './basic.scss';
+@import '../icons/style.css';
+
+.fade-in {
+    display: flex;
+    flex-flow: column;
+    justify-content: flex-start;
+    text-align: center;
+}
+
+.input-fields {
+    padding-top: 10px;
+}
+
+.remember_forgot_panel {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+.error {
+    padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    opacity: 0.7;
+    transition: all 2s linear;
+}
+
+.remember_error_container {
+    padding-bottom: 20px;
+
+    @media only screen and (max-width: 1080px) {
+        padding-bottom: 5px;
+    }
+}
+
+.forgot-password {
+    text-decoration: underline;
+    color: #15304D;
+}

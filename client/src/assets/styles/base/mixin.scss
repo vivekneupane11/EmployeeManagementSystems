@@ -1,0 +1,14 @@
+@mixin button {
+    color: white;
+    font-size: 10pt;
+
+}
+
+@mixin warning {
+    width: fit-content;
+    text-align: center;
+    border-radius: 4px;
+    color: white;
+    padding: 8px 18px;
+    font-size: 10pt;
+}

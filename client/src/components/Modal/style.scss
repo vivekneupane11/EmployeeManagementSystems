@@ -1,0 +1,50 @@
+@mixin modalstyle {
+    width: 125%;
+    height: 100vh;
+    position: absolute;
+    left: -20%;
+    top: -20%;
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+@function dis($class){
+    @if $class=="display-none"{
+        @return (none);
+    }
+    @if $class=="display-block"{
+       @return (block);
+    }
+}
+
+$selectors:(display-block, display-none);
+
+@each $class in $selectors{
+    .#{$class}{
+        @include modalstyle();
+        display: dis($class);
+    }
+}
+
+.modal-background{
+    position: absolute;
+    display: block;
+    left: 30%;
+    top: 40%;
+    width: 40%;
+    height: auto;
+    background-color: #fff;
+    border: 1px solid #000;
+}
+
+.label{
+    margin: 2em 0;
+    display: flex;
+    justify-content: center;
+}
+
+.button{
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+    margin: 1em 0;
+}
