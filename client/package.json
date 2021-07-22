@@ -27,7 +27,7 @@
     "redux-thunk": "^2.3.0",
     "request": "^2.88.0",
     "resolve-url-loader": "^3.1.0",
-    "xlsx": "^0.15.0",
+    "xlsx": "^0.17.0",
     "xlsx-style": "^0.8.13"
   },
   "scripts": {
